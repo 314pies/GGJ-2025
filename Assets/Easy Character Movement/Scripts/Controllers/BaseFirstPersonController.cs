@@ -40,19 +40,19 @@ namespace ECM.Controllers
         /// Cached camera pivot transform.
         /// </summary>
 
-        public Transform cameraPivotTransform { get; private set; }
+        public Transform cameraPivotTransform;
 
         /// <summary>
         /// Cached camera transform.
         /// </summary>
 
-        public Transform cameraTransform { get; private set; }
+        public Transform cameraTransform;
 
         /// <summary>
         /// Cached MouseLook component.
         /// </summary>
 
-        public Components.MouseLook mouseLook { get; private set; }
+        public Components.MouseLook mouseLook;
 
         /// <summary>
         /// Speed when moving forward.
@@ -251,7 +251,7 @@ namespace ECM.Controllers
 
             // Cache and initialize this components
 
-            mouseLook = GetComponent<Components.MouseLook>();
+            //mouseLook = GetComponent<Components.MouseLook>(); 
             if (mouseLook == null)
             {
                 Debug.LogError(
@@ -260,26 +260,27 @@ namespace ECM.Controllers
                         name));
             }
 
-            cameraPivotTransform = transform.Find("Camera_Pivot");
-            if (cameraPivotTransform == null)
-            {
-                Debug.LogError(string.Format(
-                    "BaseFPSController: No 'Camera_Pivot' found. Please parent a transform gameobject to '{0}' game object.",
-                    name));
-            }
+            //cameraPivotTransform = transform.Find("Camera_Pivot");
+            //if (cameraPivotTransform == null)
+            //{
+            //    Debug.LogError(string.Format(
+            //        "BaseFPSController: No 'Camera_Pivot' found. Please parent a transform gameobject to '{0}' game object.",
+            //        name));
+            //}
 
-            var cam = GetComponentInChildren<Camera>();
-            if (cam == null)
-            {
-                Debug.LogError(
-                    string.Format(
-                        "BaseFPSController: No 'Camera' found. Please parent a camera to '{0}' game object.", name));
-            }
-            else
-            {
-                cameraTransform = cam.transform;
-                mouseLook.Init(transform, cameraTransform);
-            }
+            //var cam = GetComponentInChildren<Camera>();
+            //if (cam == null)
+            //{
+            //    Debug.LogError(
+            //        string.Format(
+            //            "BaseFPSController: No 'Camera' found. Please parent a camera to '{0}' game object.", name));
+            //}
+            //else
+            //{
+            //    cameraTransform = cam.transform;
+            //    mouseLook.Init(transform, cameraTransform);
+            //}
+            mouseLook.Init(transform, cameraTransform);
         }
 
         public virtual void LateUpdate()
