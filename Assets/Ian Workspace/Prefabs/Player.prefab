@@ -396,7 +396,7 @@ MonoBehaviour:
   cam: {fileID: 3629386939047191285}
   audioListener: {fileID: 382670057825288245}
   animator: {fileID: 9096667886388611952}
-  xAnimMultiplier: 0.17
+  xAnimMultiplier: 0.19
   zAnimMultiplier: 0.13
   xVel: 0
   zVal: 0
