@@ -6,6 +6,7 @@ public class PlayerIK : MonoBehaviour
 {
     public Animator animator;
     public Vector3 lookAt;
+    public float weight = 1.0f, body = 1.0f, head = 1.0f;
 
     private void Start()
     {
@@ -13,9 +14,7 @@ public class PlayerIK : MonoBehaviour
     }
     private void OnAnimatorIK()
     {
-        Debug.Log("callled IK: " + lookAt);
-
-        animator.SetLookAtWeight(0.5f, 1, 0.5f);
+        animator.SetLookAtWeight(weight, body, head);
         animator.SetLookAtPosition(lookAt);
     }
 }

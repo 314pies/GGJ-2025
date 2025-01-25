@@ -3,6 +3,7 @@ using ECM.Controllers;
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : NetworkBehaviour
@@ -24,13 +25,9 @@ public class Player : NetworkBehaviour
     private int zVelAnimParm = Animator.StringToHash("zVel");
     private int isGroundAnimParm = Animator.StringToHash("isGround");
     // For IK
-    private RaycastHit lookAtHitInfo;
-
     public PlayerIK playerIK;
-
-    public Transform tttest;
-
-    public LayerMask layerMask;
+    public float iKSmoothTime = 0.07f;
+    private Vector3 iKSmoothVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -65,16 +62,27 @@ public class Player : NetworkBehaviour
             animator.SetFloat(xVelAnimParm, xVel);
             animator.SetFloat(zVelAnimParm, zVal);
             animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
-
-            //animator.SetTrigger("Jump");
-
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out lookAtHitInfo, 100.0f, layerMask))
-            {
-                Debug.Log("callled: " + lookAtHitInfo.point);
-                playerIK.lookAt = lookAtHitInfo.point;
-                tttest.transform.position = lookAtHitInfo.point;
-            }
-
         }
+
+        
+        playerIK.lookAt = Vector3.SmoothDamp(playerIK.lookAt, latestLookAtPos, ref iKSmoothVelocity, iKSmoothTime); ;
+    }
+
+    private void FixedUpdate()
+    {
+        if (isLocalPlayer)
+        {
+            CmdSyncLookAt(cam.transform.position + cam.transform.forward * 100);
+        }
+    }
+
+    [SyncVar]
+    public Vector3 latestLookAtPos;
+
+    // Command method
+    [Command(channel = Channels.Unreliable)]
+    public void CmdSyncLookAt(Vector3 latestPos)
+    {
+        latestLookAtPos = latestPos;
     }
 }
