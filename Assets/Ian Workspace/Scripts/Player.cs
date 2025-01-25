@@ -23,7 +23,14 @@ public class Player : NetworkBehaviour
     private int xVelAnimParm = Animator.StringToHash("xVel");
     private int zVelAnimParm = Animator.StringToHash("zVel");
     private int isGroundAnimParm = Animator.StringToHash("isGround");
-    
+    // For IK
+    private RaycastHit lookAtHitInfo;
+
+    public PlayerIK playerIK;
+
+    public Transform tttest;
+
+    public LayerMask layerMask;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +67,13 @@ public class Player : NetworkBehaviour
             animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
 
             //animator.SetTrigger("Jump");
+
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out lookAtHitInfo, 100.0f, layerMask))
+            {
+                Debug.Log("callled: " + lookAtHitInfo.point);
+                playerIK.lookAt = lookAtHitInfo.point;
+                tttest.transform.position = lookAtHitInfo.point;
+            }
 
         }
     }
