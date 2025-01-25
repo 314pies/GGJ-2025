@@ -16,6 +16,13 @@ public class Player : NetworkBehaviour
     public Camera cam;
     public AudioListener audioListener;
 
+    [Header("Animations")]
+    public Animator animator;
+    public float xAnimMultiplier = 0.1f, zAnimMultiplier = 0.1f;
+    public float xVel = 0, zVal = 0;
+    private int xVelAnimParm = Animator.StringToHash("xVel");
+    private int zVelAnimParm = Animator.StringToHash("zVel");
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,9 +44,17 @@ public class Player : NetworkBehaviour
         }
     }
 
+
     // Update is called once per frame
     void Update()
     {
-
+        if (isLocalPlayer)
+        {
+            Vector3 localVelocity = transform.InverseTransformDirection(rigidbody.velocity);
+            xVel = localVelocity.x * xAnimMultiplier;
+            zVal = localVelocity.z * zAnimMultiplier;
+            animator.SetFloat(xVelAnimParm, xVel);
+            animator.SetFloat(zVelAnimParm, zVal);
+        }
     }
 }
