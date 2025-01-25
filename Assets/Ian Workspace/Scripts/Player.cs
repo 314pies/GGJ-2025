@@ -22,6 +22,8 @@ public class Player : NetworkBehaviour
     public float xVel = 0, zVal = 0;
     private int xVelAnimParm = Animator.StringToHash("xVel");
     private int zVelAnimParm = Animator.StringToHash("zVel");
+    private int isGroundAnimParm = Animator.StringToHash("isGround");
+    
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +57,10 @@ public class Player : NetworkBehaviour
             zVal = localVelocity.z * zAnimMultiplier;
             animator.SetFloat(xVelAnimParm, xVel);
             animator.SetFloat(zVelAnimParm, zVal);
+            animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
+
+            //animator.SetTrigger("Jump");
+
         }
     }
 }
