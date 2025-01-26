@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7954065229302409356}
   - component: {fileID: 4331339114775101691}
   - component: {fileID: 8723812693741362668}
+  - component: {fileID: 1302223687552276782}
   - component: {fileID: 2805150784587085819}
   m_Layer: 0
   m_Name: FloatingBubble
@@ -128,6 +129,14 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
+--- !u!33 &1302223687552276782
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635369357144545931}
+  m_Mesh: {fileID: -2432090755550338912, guid: 31214ed5cb6789642ad28fca703d8cde, type: 3}
 --- !u!54 &2805150784587085819
 Rigidbody:
   m_ObjectHideFlags: 0
