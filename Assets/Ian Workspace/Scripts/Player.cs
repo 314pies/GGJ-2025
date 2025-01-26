@@ -31,12 +31,11 @@ public class Player : NetworkBehaviour
     private Vector3 iKSmoothVelocity;
 
     [SyncVar(hook = nameof(onPlayerStateChanged))]
-    public PlayerState playerState;
+    public int playerState;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerState = PlayerState.SPECTATING;
         if (isLocalPlayer)
         {
             characterMovement.enabled = false;
@@ -59,7 +58,6 @@ public class Player : NetworkBehaviour
 
     void setupLocalPlayer()
     {
-        playerState = PlayerState.ALIVE;
         characterMovement.enabled = true;
         baseFirstPersonController.enabled = true;
         rigidbody.isKinematic = false;
@@ -74,7 +72,7 @@ public class Player : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            switch (playerState)
+            switch ((PlayerState) playerState)
             {
                 case PlayerState.ALIVE:
                     handleAliveUpdate();
@@ -86,21 +84,27 @@ public class Player : NetworkBehaviour
             }
         }
 
-        if (isServer && transform.position.y < -1 && playerState == PlayerState.ALIVE)
+        if (isServer && transform.position.y < -1 && (PlayerState) playerState == PlayerState.ALIVE)
         {
-            playerState = PlayerState.SPECTATING;
+            syncPlayerStateChage(PlayerState.SPECTATING);
         }
 
         playerIK.lookAt = Vector3.SmoothDamp(playerIK.lookAt, latestLookAtPos, ref iKSmoothVelocity, iKSmoothTime);
     }
 
-    void onPlayerStateChanged(PlayerState oldState, PlayerState newState) {
-        if (oldState != PlayerState.ALIVE)
+    //[Command(channel = Channels.Reliable)]
+    public void syncPlayerStateChage(PlayerState givenPlayerState)
+    {
+        playerState = (int) givenPlayerState;
+    }
+
+    void onPlayerStateChanged(int oldState, int newState) {
+        if ((PlayerState) oldState != PlayerState.ALIVE)
         {
             return;
         }
 
-        switch (newState)
+        switch ((PlayerState) newState)
         {
             case PlayerState.SPECTATING:
                 enableGlobalCamera();
@@ -112,6 +116,10 @@ public class Player : NetworkBehaviour
 
     void enableGlobalCamera()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         cam.enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GameObject globalCamera = GameObject.FindWithTag("GlobalCamera");
