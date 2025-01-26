@@ -9,6 +9,9 @@ public class PoplessPU : NetworkBehaviour
     [SerializeField] private GameObject player;
     private ManagePowerUp mpu;
     private Coroutine coroutine;
+
+    [SyncVar(hook = nameof(changeActiveState))]
+    private bool active = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,8 +43,8 @@ public class PoplessPU : NetworkBehaviour
             if (mpu != null)
             {
                 mpu.popPower = true;
-                gameObject.GetComponent<Renderer>().enabled = false;
-                gameObject.GetComponent<Collider>().enabled = false;
+                active = false;
+                
                 if (coroutine != null)
                 {
                     StopCoroutine(coroutine);
@@ -50,5 +53,11 @@ public class PoplessPU : NetworkBehaviour
                 Debug.Log("popless");
             }
         }
+    }
+
+    private void changeActiveState(bool oldVal, bool newVal)
+    {
+        gameObject.GetComponent<MeshRenderer>().enabled = newVal;
+        gameObject.GetComponent<Collider>().enabled = newVal;
     }
 }

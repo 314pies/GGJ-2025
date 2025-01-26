@@ -9,6 +9,9 @@ public class SpeedBoostPU : NetworkBehaviour
     [SerializeField] private GameObject player;
     private ManagePowerUp mpu;
     private Coroutine coroutine;
+
+    [SyncVar(hook = nameof(changeActiveState))]
+    private bool active = true;
     // Start is called before the first frame update
     void Awake()
     {
@@ -40,8 +43,8 @@ public class SpeedBoostPU : NetworkBehaviour
             if (mpu != null)
             {
                 mpu.speedPower = true;
-                gameObject.GetComponent<Renderer>().enabled = false;
-                gameObject.GetComponent<Collider>().enabled = false;
+                active = false;
+
                 if (coroutine != null)
                 {
                     StopCoroutine(coroutine);
@@ -50,6 +53,12 @@ public class SpeedBoostPU : NetworkBehaviour
                 Debug.Log("speed boost");
             }
         }
+    }
+
+    private void changeActiveState(bool oldVal, bool newVal)
+    {
+        gameObject.GetComponent<MeshRenderer>().enabled = newVal;
+        gameObject.GetComponent<Collider>().enabled = newVal;
     }
 
 }
