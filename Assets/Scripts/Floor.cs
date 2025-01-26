@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class Floor : MonoBehaviour
+public class Floor : NetworkBehaviour
 {
     public GameObject bubblePrefab;
     public float avgDistance;
@@ -23,6 +24,7 @@ public class Floor : MonoBehaviour
                 GameObject bubble = Instantiate(bubblePrefab,
                     transform.position + new Vector3(i * avgDistance + xOff, yOff, j * avgDistance + zOff),
                     Quaternion.identity);
+                NetworkServer.Spawn(bubble);
 
                 bubble.transform.localScale *= scale;
             }

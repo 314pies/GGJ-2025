@@ -34,8 +34,8 @@ public class Player : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            characterMovement.enabled = true;
-            baseFirstPersonController.enabled = true;
+            characterMovement.enabled = false;
+            baseFirstPersonController.enabled = false;
             rigidbody.isKinematic = false;
             cam.enabled = true;
             audioListener.enabled = true;
@@ -48,6 +48,15 @@ public class Player : NetworkBehaviour
             cam.enabled = false;
             audioListener.enabled = false;
         }
+    }
+
+    void setupLocalPlayer()
+    {
+        characterMovement.enabled = true;
+        baseFirstPersonController.enabled = true;
+        rigidbody.isKinematic = false;
+        cam.enabled = true;
+        audioListener.enabled = true;
     }
 
 
@@ -64,7 +73,7 @@ public class Player : NetworkBehaviour
             animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
         }
 
-        
+
         playerIK.lookAt = Vector3.SmoothDamp(playerIK.lookAt, latestLookAtPos, ref iKSmoothVelocity, iKSmoothTime); ;
     }
 
@@ -84,5 +93,29 @@ public class Player : NetworkBehaviour
     public void CmdSyncLookAt(Vector3 latestPos)
     {
         latestLookAtPos = latestPos;
+    }
+
+    private Vector3[] spawnVectors =
+    {
+        new Vector3(0, 200, 0)
+    };
+
+    public override void OnStartAuthority()
+    {
+        base.OnStartAuthority();
+
+        if (!isLocalPlayer) return;
+
+        StartCoroutine(waitForSpawn(2));
+    }
+
+    IEnumerator waitForSpawn(float delay)
+    {
+        // Wait for the specified time
+        yield return new WaitForSeconds(delay);
+
+        Vector3 spawnPoint = spawnVectors[Random.Range(0, spawnVectors.Length)];
+        transform.position = spawnPoint;
+        setupLocalPlayer();
     }
 }

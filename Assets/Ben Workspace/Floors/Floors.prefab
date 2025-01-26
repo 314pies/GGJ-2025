@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4371219838181514011
+--- !u!1 &7171061504099475799
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7271538286119125513}
-  - component: {fileID: 6197894989502382718}
-  - component: {fileID: 3566924087092914670}
+  - component: {fileID: 7766448313316676633}
+  - component: {fileID: 4789513083510476309}
+  - component: {fileID: 723123921275616756}
   m_Layer: 0
-  m_Name: UnderwaterGenerator
+  m_Name: Floors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7271538286119125513
+--- !u!4 &7766448313316676633
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4371219838181514011}
+  m_GameObject: {fileID: 7171061504099475799}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,39 +33,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6197894989502382718
+--- !u!114 &4789513083510476309
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4371219838181514011}
+  m_GameObject: {fileID: 7171061504099475799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b4bd74ecae1e4741a84d65fff9473fa, type: 3}
+  m_Script: {fileID: 11500000, guid: a31fb2c787d3c8140b0ceedb202b204a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  floatingBubblePrefab: {fileID: 0}
-  generatorThreshold: 0.25
-  xMax: 20
-  zMax: 20
---- !u!114 &3566924087092914670
+--- !u!114 &723123921275616756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4371219838181514011}
+  m_GameObject: {fileID: 7171061504099475799}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
-  _assetId: 1746987750
+  _assetId: 485165695
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
