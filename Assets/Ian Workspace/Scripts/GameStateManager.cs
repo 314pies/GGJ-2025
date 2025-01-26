@@ -31,10 +31,17 @@ public class GameStateManager : NetworkBehaviour
     [Header("Other")]
     public GameObject waitFloor;
 
+    public GameObject ServerRestartButton;
+
     public void ServerStartGame()
     {
         Debug.Log("Server Start Game");
         gameState = GameState.InGame;
+    }
+
+    public void ServerReloadScene()
+    {
+        NetworkManager.singleton.ServerChangeScene("arena");
     }
 
     public void OnWinnerNameupdate(string oldValue, string newValue)
@@ -47,6 +54,7 @@ public class GameStateManager : NetworkBehaviour
         waitingUI.SetActive(false);
         gameOverUI.SetActive(false);
         gameStartButton.SetActive(false);
+        ServerRestartButton.SetActive(false);
         switch (newState)
         {
             case GameState.Wait:
@@ -62,6 +70,12 @@ public class GameStateManager : NetworkBehaviour
                 break;
             case GameState.GameOver:
                 gameOverUI.SetActive(true);
+                if (isServer)
+                {
+                    ServerRestartButton.SetActive(true);
+                    GameObject.FindGameObjectWithTag("GlobalCamera").GetComponent<FlyCamera>().enabled = false;
+
+                }
                 break;
             default:
                 break;

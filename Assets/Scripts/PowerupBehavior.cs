@@ -10,9 +10,17 @@ public class PowerupBehavior : NetworkBehaviour
     [SerializeField] private GameObject[] powerups;
     [SerializeField] private float delay = 3.0f;
     // Start is called before the first frame update
-    void Start()
+
+    public override void OnStartClient()
     {
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Floor")) 
+        StartCoroutine(WaitAndInitializeFloorList());
+    }
+
+    IEnumerator WaitAndInitializeFloorList()
+    {
+        // suspend execution for 5 seconds
+        yield return new WaitForSeconds(1.5f);
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Floor"))
         {
             floor.Add(obj);
         }
@@ -22,7 +30,7 @@ public class PowerupBehavior : NetworkBehaviour
     void FixedUpdate()
     {
         if (!isServer) { return; }
-        if (delay < 0)
+        if (delay < 0 && floor.Count > 0)
         {
             // remove destroyed bubbles, select random bubble, and place powerup on unoccupied bubble
             floor.RemoveAll(x => x == null);
