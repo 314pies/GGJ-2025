@@ -99,18 +99,20 @@ public class Player : NetworkBehaviour
         latestLookAtPos = latestPos;
     }
 
+    [SerializeField]
     private Vector3[] spawnVectors =
     {
         new Vector3(0, 90, 0)
     };
 
+    public float setSpawnPointTime = 0.6f;
     public override void OnStartAuthority()
     {
         base.OnStartAuthority();
 
         if (!isLocalPlayer) return;
 
-        StartCoroutine(waitForSpawn(2));
+        StartCoroutine(waitForSpawn(setSpawnPointTime));
     }
 
     IEnumerator waitForSpawn(float delay)

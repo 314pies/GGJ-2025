@@ -14,8 +14,8 @@ public class FloorBubble : MonoBehaviour
     }
 
     public void Pop() {
-        popping = Time.time;
-        GetComponent<Renderer>().material = shinyMaterial;
-        Destroy(gameObject, 0.4f);
+        //popping = Time.time;
+        //GetComponent<Renderer>().material = shinyMaterial;
+        //Destroy(gameObject, 0.4f);
     }
 }
