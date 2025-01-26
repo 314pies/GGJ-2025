@@ -7,7 +7,7 @@ using UnityEngine;
 public class PowerupBehavior : NetworkBehaviour
 {
     private List<GameObject> floor = new List<GameObject>();
-    [SerializeField] private GameObject powerup;
+    [SerializeField] private GameObject[] powerups;
     [SerializeField] private float delay = 3.0f;
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,7 @@ public class PowerupBehavior : NetworkBehaviour
         {
             // remove destroyed bubbles, select random bubble, and place powerup on unoccupied bubble
             floor.RemoveAll(x => x == null);
-            GameObject bubble = floor[Random.Range(0, floor.Count - 1)];
+            GameObject bubble = floor[Random.Range(0, floor.Count)];
             Vector3 loc = bubble.transform.localPosition;
             loc.y++;
             bool sameLoc = false;
@@ -42,7 +42,7 @@ public class PowerupBehavior : NetworkBehaviour
             }
             if (!sameLoc)
             {
-                GameObject pu = Instantiate(powerup, loc, Quaternion.identity);
+                GameObject pu = Instantiate(powerups[Random.Range(0, powerups.Length)], loc, Quaternion.identity);
                 NetworkServer.Spawn(pu);
                 
             }

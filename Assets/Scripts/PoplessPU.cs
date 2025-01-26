@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedBoostPU : NetworkBehaviour
+public class PoplessPU : NetworkBehaviour
 {
     [SerializeField] private float timer = 3.0f;
     [SerializeField] private GameObject player;
     private ManagePowerUp mpu;
     private Coroutine coroutine;
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         
     }
@@ -24,8 +24,8 @@ public class SpeedBoostPU : NetworkBehaviour
     IEnumerator countdown()
     {
         yield return new WaitForSeconds(timer);
-        Debug.Log("time is up");
-        mpu.speedPower = false;
+        Debug.Log("time is up for pop");
+        mpu.popPower = false;
         Destroy(gameObject);
     }
 
@@ -39,7 +39,7 @@ public class SpeedBoostPU : NetworkBehaviour
             mpu = player.GetComponent<ManagePowerUp>();
             if (mpu != null)
             {
-                mpu.speedPower = true;
+                mpu.popPower = true;
                 gameObject.GetComponent<Renderer>().enabled = false;
                 gameObject.GetComponent<Collider>().enabled = false;
                 if (coroutine != null)
@@ -47,9 +47,8 @@ public class SpeedBoostPU : NetworkBehaviour
                     StopCoroutine(coroutine);
                 }
                 coroutine = StartCoroutine(countdown());
-                Debug.Log("speed boost");
+                Debug.Log("popless");
             }
         }
     }
-
 }

@@ -261,7 +261,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  powerup: {fileID: 6444121035969173720, guid: aad2b6df86d8ead4c8dd1e9d3ab6d643, type: 3}
+  powerups:
+  - {fileID: 6444121035969173720, guid: aad2b6df86d8ead4c8dd1e9d3ab6d643, type: 3}
+  - {fileID: 6444121035969173720, guid: 9839e270ea2e4c243bb9dbfee917d360, type: 3}
   delay: 3
 --- !u!4 &180052147
 Transform:
@@ -551,6 +553,7 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 6444121035969173720, guid: aad2b6df86d8ead4c8dd1e9d3ab6d643, type: 3}
+  - {fileID: 6444121035969173720, guid: 9839e270ea2e4c243bb9dbfee917d360, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -1431362027046605595}
   - component: {fileID: 325854759076365519}
   m_Layer: 0
-  m_Name: Powerup
+  m_Name: SpeedBoost
   m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

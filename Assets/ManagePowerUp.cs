@@ -7,14 +7,16 @@ using UnityEngine;
 public class ManagePowerUp : NetworkBehaviour
 {
     private BaseFirstPersonController bfpc;
+    private BubblePopper bubblePopper;
 
-    [SyncVar(hook = nameof(SetPower))]
-    [SerializeField] public bool power = false;
+    [SyncVar(hook = nameof(SetSpeedPower))]
+    [SerializeField] public bool speedPower = false;
 
-    [SyncVar]
+    [SyncVar(hook = nameof(SetPopPower))]
+    [SerializeField] public bool popPower = false;
+
     [SerializeField] float baseSpeed;
 
-    [SyncVar]
     [SerializeField] float boostedSpeed;
 
     
@@ -22,6 +24,7 @@ public class ManagePowerUp : NetworkBehaviour
     void Start()
     {
         bfpc = gameObject.GetComponent<BaseFirstPersonController>();
+        bubblePopper = gameObject.GetComponent <BubblePopper>();
         baseSpeed = bfpc.speed;
         boostedSpeed = bfpc.speed * 10;
     }
@@ -32,12 +35,16 @@ public class ManagePowerUp : NetworkBehaviour
         
     }
 
-    void SetPower(bool oldPower, bool newPower)
+    void SetPopPower(bool oldPower, bool newPower)
     {
-        Debug.Log("Changing power: " + newPower);
-        power = newPower;
+        bubblePopper.power = newPower;
+    }
 
-        if (power)
+    void SetSpeedPower(bool oldPower, bool newPower)
+    {
+        speedPower = newPower;
+
+        if (speedPower)
         {
             SpeedChange(boostedSpeed);
         }
@@ -49,6 +56,7 @@ public class ManagePowerUp : NetworkBehaviour
 
     void SpeedChange(float speed)
     {
+        bfpc.speed = speed;
         bfpc.forwardSpeed = speed;
         bfpc.backwardSpeed = speed;
     }
