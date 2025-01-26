@@ -5863,7 +5863,7 @@ PrefabInstance:
         type: 3}
       propertyPath: floatingBubblePrefab
       value: 
-      objectReference: {fileID: 6652662009143372612, guid: cd6a5ea056c96a74a9597feadac40c45,
+      objectReference: {fileID: 635369357144545931, guid: 765dde20e5e877b46a00ea5bc5f14b9d,
         type: 3}
     - target: {fileID: 7271538286119125513, guid: 2cf4412c008fcbb44a3faf300f94cfbf,
         type: 3}
