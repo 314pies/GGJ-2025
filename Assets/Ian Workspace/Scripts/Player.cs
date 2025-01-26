@@ -16,6 +16,7 @@ public class Player : NetworkBehaviour
     public Rigidbody rigidbody;
     public Camera cam;
     public AudioListener audioListener;
+    public Canvas canvas;
 
     [Header("Animations")]
     public Animator animator;
@@ -39,6 +40,7 @@ public class Player : NetworkBehaviour
             rigidbody.isKinematic = false;
             cam.enabled = true;
             audioListener.enabled = true;
+            canvas.gameObject.SetActive(true);
         }
         else
         {
@@ -47,6 +49,7 @@ public class Player : NetworkBehaviour
             rigidbody.isKinematic = true;
             cam.enabled = false;
             audioListener.enabled = false;
+            canvas.gameObject.SetActive(false);
         }
     }
 
@@ -57,6 +60,7 @@ public class Player : NetworkBehaviour
         rigidbody.isKinematic = false;
         cam.enabled = true;
         audioListener.enabled = true;
+        
     }
 
 
@@ -123,5 +127,11 @@ public class Player : NetworkBehaviour
         Vector3 spawnPoint = spawnVectors[Random.Range(0, spawnVectors.Length)];
         transform.position = spawnPoint;
         setupLocalPlayer();
+    }
+
+    public Animator cameraAnimator;
+    public void playCameraShakeEffect()
+    {
+        cameraAnimator.SetTrigger("CameraShakeTrigger");
     }
 }
