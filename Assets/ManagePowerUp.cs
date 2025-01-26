@@ -1,3 +1,4 @@
+using ECM.Components;
 using ECM.Controllers;
 using Mirror;
 using System.Collections;
@@ -7,6 +8,7 @@ using UnityEngine;
 public class ManagePowerUp : NetworkBehaviour
 {
     private BaseFirstPersonController bfpc;
+    private CharacterMovement cm;
     private BubblePopper bubblePopper;
 
     [SyncVar(hook = nameof(SetSpeedPower))]
@@ -15,9 +17,9 @@ public class ManagePowerUp : NetworkBehaviour
     [SyncVar(hook = nameof(SetPopPower))]
     [SerializeField] public bool popPower = false;
 
-    [SerializeField] float baseSpeed;
-
-    [SerializeField] float boostedSpeed;
+    [SerializeField] private float maxSpeed = 20f;
+    private float baseSpeed;
+    private float boostedSpeed;
 
     
     // Start is called before the first frame update
@@ -25,6 +27,7 @@ public class ManagePowerUp : NetworkBehaviour
     {
         bfpc = gameObject.GetComponent<BaseFirstPersonController>();
         bubblePopper = gameObject.GetComponent <BubblePopper>();
+        cm = gameObject.GetComponent<CharacterMovement>();
         baseSpeed = bfpc.speed;
         boostedSpeed = bfpc.speed * 10;
     }
@@ -46,7 +49,7 @@ public class ManagePowerUp : NetworkBehaviour
 
         if (speedPower)
         {
-            SpeedChange(boostedSpeed);
+            SpeedChange(boostedSpeed, maxSpeed);
         }
         else
         {
@@ -54,8 +57,9 @@ public class ManagePowerUp : NetworkBehaviour
         }
     }
 
-    void SpeedChange(float speed)
+    void SpeedChange(float speed, float maxSpeed = 10)
     {
+        cm.maxLateralSpeed = maxSpeed;
         bfpc.speed = speed;
         bfpc.forwardSpeed = speed;
         bfpc.backwardSpeed = speed;
