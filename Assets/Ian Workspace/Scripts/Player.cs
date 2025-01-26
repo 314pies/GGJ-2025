@@ -30,9 +30,13 @@ public class Player : NetworkBehaviour
     public float iKSmoothTime = 0.07f;
     private Vector3 iKSmoothVelocity;
 
+    [SyncVar(hook = nameof(onPlayerStateChanged))]
+    public PlayerState playerState;
+
     // Start is called before the first frame update
     void Start()
     {
+        playerState = PlayerState.SPECTATING;
         if (isLocalPlayer)
         {
             characterMovement.enabled = false;
@@ -55,6 +59,7 @@ public class Player : NetworkBehaviour
 
     void setupLocalPlayer()
     {
+        playerState = PlayerState.ALIVE;
         characterMovement.enabled = true;
         baseFirstPersonController.enabled = true;
         rigidbody.isKinematic = false;
@@ -69,20 +74,82 @@ public class Player : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            Vector3 localVelocity = transform.InverseTransformDirection(rigidbody.velocity);
-            xVel = localVelocity.x * xAnimMultiplier;
-            zVal = localVelocity.z * zAnimMultiplier;
-            animator.SetFloat(xVelAnimParm, xVel);
-            animator.SetFloat(zVelAnimParm, zVal);
-            animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
-            if (Input.GetKeyDown(KeyCode.L))
+            switch (playerState)
             {
-                GetComponent<Rigidbody>().AddForce(Vector3.up * 300, ForceMode.Impulse);
+                case PlayerState.ALIVE:
+                    handleAliveUpdate();
+                    break;
+                case PlayerState.SPECTATING:
+                case PlayerState.DEAD:
+                    //handleSpectatingUpdate();
+                    break;
             }
         }
 
+        if (isServer && transform.position.y < -1 && playerState == PlayerState.ALIVE)
+        {
+            playerState = PlayerState.SPECTATING;
+        }
 
-        playerIK.lookAt = Vector3.SmoothDamp(playerIK.lookAt, latestLookAtPos, ref iKSmoothVelocity, iKSmoothTime); ;
+        playerIK.lookAt = Vector3.SmoothDamp(playerIK.lookAt, latestLookAtPos, ref iKSmoothVelocity, iKSmoothTime);
+    }
+
+    void onPlayerStateChanged(PlayerState oldState, PlayerState newState) {
+        if (oldState != PlayerState.ALIVE)
+        {
+            return;
+        }
+
+        switch (newState)
+        {
+            case PlayerState.SPECTATING:
+                enableGlobalCamera();
+                break;
+            default:
+                return;
+        }
+    }
+
+    void enableGlobalCamera()
+    {
+        cam.enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        GameObject globalCamera = GameObject.FindWithTag("GlobalCamera");
+        globalCamera.GetComponent<Camera>().enabled = true;
+        globalCamera.GetComponent<FlyCamera>().enabled = true;
+    }
+
+    void disableGlobalCamera()
+    {
+        cam.enabled = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GameObject globalCamera = GameObject.FindWithTag("GlobalCamera");
+        globalCamera.GetComponent<Camera>().enabled = false;
+        globalCamera.GetComponent<FlyCamera>().enabled = false;
+    }
+
+    void handleSpectatingUpdate()
+    {
+        Vector3 localVelocity = transform.InverseTransformDirection(rigidbody.velocity);
+        xVel = localVelocity.x * xAnimMultiplier;
+        zVal = localVelocity.z * zAnimMultiplier;
+        animator.SetFloat(xVelAnimParm, xVel);
+        animator.SetFloat(zVelAnimParm, zVal);
+        animator.SetBool(isGroundAnimParm, false);
+    }
+
+    void handleAliveUpdate()
+    {
+        Vector3 localVelocity = transform.InverseTransformDirection(rigidbody.velocity);
+        xVel = localVelocity.x * xAnimMultiplier;
+        zVal = localVelocity.z * zAnimMultiplier;
+        animator.SetFloat(xVelAnimParm, xVel);
+        animator.SetFloat(zVelAnimParm, zVal);
+        animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            GetComponent<Rigidbody>().AddForce(Vector3.up * 300, ForceMode.Impulse);
+        }
     }
 
     private void FixedUpdate()
@@ -133,5 +200,12 @@ public class Player : NetworkBehaviour
     public void playCameraShakeEffect()
     {
         cameraAnimator.SetTrigger("CameraShakeTrigger");
+    }
+
+    public enum PlayerState
+    {
+        ALIVE,
+        DEAD,
+        SPECTATING,
     }
 }
