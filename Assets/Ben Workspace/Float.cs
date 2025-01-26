@@ -59,6 +59,7 @@ public class Float : NetworkBehaviour
         if (player != null)
         {
             if (player.isLocalPlayer) {
+                GetComponent<AudioSource>().Play();
                 bouncePlayer(player);
                 cmdDestroyBubble();
             }            

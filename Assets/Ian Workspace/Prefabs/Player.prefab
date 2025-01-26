@@ -739,6 +739,7 @@ MonoBehaviour:
   syncInterval: 0
   power: 0
   popSound: {fileID: 8300000, guid: 3d8e96a5be3a54a84b16bad0bbd0d62a, type: 3}
+  floatPopSound: {fileID: 8300000, guid: 06cb3787e1c524c95b6c2c1cc22e93a0, type: 3}
   disableDestroy: 0
 --- !u!114 &-1096074120030004580
 MonoBehaviour:
