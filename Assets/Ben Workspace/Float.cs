@@ -56,7 +56,7 @@ public class Float : NetworkBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Player player = collision.gameObject.GetComponent<Player>();
-        if (player != null && player.playerState == Player.PlayerState.ALIVE)
+        if (player != null)
         {
             if (player.isLocalPlayer) {
                 bouncePlayer(player);
@@ -85,7 +85,6 @@ public class Float : NetworkBehaviour
         float timePastFirstCollision = Time.time - timeOfFirstCollision;
         bool shouldDestroy = (timePastFirstCollision > secondsBeforePop);
         Player player = collision.gameObject.GetComponent<Player>();
-        shouldDestroy = shouldDestroy && (player == null || player.playerState != Player.PlayerState.ALIVE);
 
         if (shouldDestroy)
         {
