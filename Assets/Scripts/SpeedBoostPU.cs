@@ -7,6 +7,7 @@ public class SpeedBoostPU : NetworkBehaviour
 {
     [SerializeField] private float timer = 3.0f;
     [SerializeField] private GameObject player;
+    [SerializeField] private ParticleSystem ps;
     private ManagePowerUp mpu;
     private Coroutine coroutine;
 
@@ -57,6 +58,7 @@ public class SpeedBoostPU : NetworkBehaviour
 
     private void changeActiveState(bool oldVal, bool newVal)
     {
+        ps.Play();
         gameObject.GetComponent<MeshRenderer>().enabled = newVal;
         gameObject.GetComponent<Collider>().enabled = newVal;
     }
