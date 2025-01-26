@@ -605,7 +605,8 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  rotationSpeed: 15
+  fullAmmoCount: 5
+  rotationSpeed: 70
 --- !u!65 &3288729992275891454
 BoxCollider:
   m_ObjectHideFlags: 0

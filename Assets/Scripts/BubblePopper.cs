@@ -26,9 +26,12 @@ public class BubblePopper : NetworkBehaviour
                     {
                         if (!floorBubble.destroying)
                         {
-                            floorBubble.destroying = true;
                             if (!disableDestroy)
+                            {
+                                floorBubble.destroying = true;
+
                                 Destroy(floorBubble.gameObject, 0.4f);
+                            }
                         }
                     }
                 }

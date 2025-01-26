@@ -32,6 +32,7 @@ public class PlazmaProjectile : NetworkBehaviour
         }
         GetComponent<Rigidbody>().isKinematic = true;
         RpcExplode();
+        Destroy(gameObject, 5.0f);
     }
 
     [ClientRpc]

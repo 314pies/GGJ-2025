@@ -19,8 +19,10 @@ public class PlasmaLauncher : NetworkBehaviour
             animator.SetBool("IsHoldingRifle", newState);
             ammoText.gameObject.SetActive(newState);
         }
-
-        plasmaRifleModel.gameObject.SetActive(newState);
+        if (plasmaRifleModel != null)
+        {
+            plasmaRifleModel.gameObject.SetActive(newState);
+        }
     }
 
     [SyncVar(hook = nameof(onAmmoUpdate))]
@@ -43,9 +45,13 @@ public class PlasmaLauncher : NetworkBehaviour
 
     public TMP_Text ammoText;
 
-    public void Awake()
+    public void Initialize(GameObject characterRoot, Animator newAnimator)
     {
-        plasmaRifleModel = GetComponentInChildren<PlasmaRifleModel>();
+        this.animator = newAnimator;
+
+        plasmaRifleModel = characterRoot.GetComponentInChildren<PlasmaRifleModel>(true);
+        // Force update plazma gun equiping status
+        plazmaGunEnableStateHook(false, isPlazmaGunEnabled);
     }
 
     public override void OnStartClient()
