@@ -348,6 +348,7 @@ GameObject:
   - component: {fileID: 2950768308365143876}
   - component: {fileID: 4736823859781810766}
   - component: {fileID: 1459360664043700873}
+  - component: {fileID: 6620704224784059083}
   - component: {fileID: 3758577945943660369}
   - component: {fileID: 8950141173259655055}
   m_Layer: 6
@@ -401,9 +402,7 @@ MonoBehaviour:
   xVel: 0
   zVal: 0
   playerIK: {fileID: 2068335429008556913}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 55
+  iKSmoothTime: 0.07
   latestLookAtPos: {x: 0, y: 0, z: 0}
 --- !u!114 &-8219785543233034484
 MonoBehaviour:
@@ -574,6 +573,18 @@ MonoBehaviour:
   _clampPitch: 1
   _minPitchAngle: -90
   _maxPitchAngle: 90
+--- !u!114 &6620704224784059083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7900372630917870139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7a7fac8a36545f6b63d6b5164fa968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3758577945943660369
 MonoBehaviour:
   m_ObjectHideFlags: 0
