@@ -697,9 +697,10 @@ MonoBehaviour:
   zVal: 0
   playerIK: {fileID: 2068335429008556913}
   iKSmoothTime: 0.07
+  playerState: 0
   latestLookAtPos: {x: 0, y: 0, z: 0}
   spawnVectors:
-  - {x: 0, y: 50, z: 0}
+  - {x: 0, y: 80, z: 0}
   setSpawnPointTime: 0.6
   cameraAnimator: {fileID: 6512467005956510887}
 --- !u!114 &-1586707627386085238

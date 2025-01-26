@@ -21,18 +21,44 @@ public class GameStateManager : NetworkBehaviour
     public GameObject waitingUI;
     public GameObject gameOverUI;
 
+    [Header("ServerWait")]
+    public GameObject gameStartButton;
+
+    [Header("GameOverSyncVar")]
+    [SyncVar(hook = nameof(OnWinnerNameupdate))]
+    public string winnerName;
+
+    [Header("Other")]
+    public GameObject waitFloor;
+
+    public void ServerStartGame()
+    {
+        Debug.Log("Server Start Game");
+        gameState = GameState.InGame;
+    }
+
+    public void OnWinnerNameupdate(string oldValue, string newValue)
+    {
+        gameOverUI.GetComponent<GameOverUI>().updateStatus(newValue);
+    }
     public void OnGameStateUpdate(GameState old, GameState newState)
     {
-
+        Debug.Log("OnGameStateUpdate: " + newState);
         waitingUI.SetActive(false);
         gameOverUI.SetActive(false);
-
+        gameStartButton.SetActive(false);
         switch (newState)
         {
             case GameState.Wait:
                 waitingUI.SetActive(true);
+                if (isServer)
+                {
+                    gameStartButton.SetActive(true);
+                }
+                waitFloor.SetActive(true);
                 break;
             case GameState.InGame:
+                waitFloor.SetActive(false);
                 break;
             case GameState.GameOver:
                 gameOverUI.SetActive(true);
@@ -60,13 +86,25 @@ public class GameStateManager : NetworkBehaviour
         Debug.Log("GameStartAnnouncement");
     }
 
-    public void OnClientFallEvent(GameObject player)
+    // Called by Player script
+    public void ServerOnClientFallEvent(GameObject player)
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         int livePlayer = 0;
+        GameObject livePlayerObj = player;
         foreach (GameObject p in players)
         {
-            //if (p.GetComponent<Player>().status)
+            if (p.GetComponent<Player>().playerState == (int)Player.PlayerState.ALIVE)
+            {
+                livePlayer++;
+                livePlayerObj = p;
+            }
+        }
+
+        if (livePlayer <= 1)
+        {
+            gameState = GameState.GameOver;
+            winnerName = "" + livePlayerObj.GetComponent<NetworkIdentity>().connectionToClient.connectionId;
         }
     }
 

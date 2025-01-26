@@ -96,6 +96,9 @@ public class Player : NetworkBehaviour
     public void syncPlayerStateChage(PlayerState givenPlayerState)
     {
         playerState = (int) givenPlayerState;
+        GameObject.FindGameObjectWithTag("GameStateManager")
+            .GetComponent<GameStateManager>()
+            .ServerOnClientFallEvent(gameObject);
     }
 
     void onPlayerStateChanged(int oldState, int newState) {
@@ -181,7 +184,7 @@ public class Player : NetworkBehaviour
     [SerializeField]
     private Vector3[] spawnVectors =
     {
-        new Vector3(0, 90, 0)
+        new Vector3(0, 150, 0)
     };
 
     public float setSpawnPointTime = 0.6f;
