@@ -37,6 +37,7 @@ public class PlazmaProjectile : NetworkBehaviour
     [ClientRpc]
     public void RpcExplode()
     {
+        
         flyingPlazma.SetActive(false);
         explosion.transform.position = new Vector3(
             explosion.transform.position.x,
@@ -45,6 +46,7 @@ public class PlazmaProjectile : NetworkBehaviour
             );
         explosion.transform.LookAt(transform.position + Vector3.up, Vector3.up);
         explosion.SetActive(true);
+        GetComponent<AudioSource>().Play();
     }
 
     void OnDrawGizmosSelected()

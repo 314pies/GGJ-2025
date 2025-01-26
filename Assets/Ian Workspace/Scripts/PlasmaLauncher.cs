@@ -89,6 +89,7 @@ public class PlasmaLauncher : NetworkBehaviour
                 cam.transform.rotation);
             animator.SetTrigger("Fire");
             GetComponent<Player>().playCameraShakeEffect();
+            GetComponent<AudioSource>().Play();
         }
 
     }

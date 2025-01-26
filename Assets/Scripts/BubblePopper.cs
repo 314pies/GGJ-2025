@@ -8,8 +8,12 @@ public class BubblePopper : NetworkBehaviour
 {
     [SyncVar]
     [SerializeField] public bool power = false;
+    public AudioClip popSound;
 
     public bool disableDestroy = false;
+
+    float destroyDelay = 0.4f;
+
     void FixedUpdate()
     {
         if (!power)
@@ -28,11 +32,17 @@ public class BubblePopper : NetworkBehaviour
                         {
                             floorBubble.destroying = true;
                             if (!disableDestroy)
-                                Destroy(floorBubble.gameObject, 0.4f);
+                                StartCoroutine(PlayPop(floorBubble.transform.position));
+                                Destroy(floorBubble.gameObject, destroyDelay);
                         }
                     }
                 }
             }
         }
+    }
+
+    IEnumerator PlayPop(Vector3 position) {
+        yield return new WaitForSeconds(destroyDelay);
+        AudioSource.PlayClipAtPoint(popSound, position);
     }
 }
