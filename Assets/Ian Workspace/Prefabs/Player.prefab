@@ -758,7 +758,7 @@ MonoBehaviour:
   syncInterval: 0
   enableByDefault: 1
   isPlazmaGunEnabled: 0
-  ammoCount: 5
+  ammoCount: 3
   plasmaPrefab: {fileID: 4926578939859606226, guid: b2f69bb89e1098a49b211edbead3afac,
     type: 3}
   cam: {fileID: 3629386939047191285}

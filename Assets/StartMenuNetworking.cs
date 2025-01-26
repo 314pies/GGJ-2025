@@ -8,13 +8,13 @@ public class StartMenuNetworking : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public GameObject StarMenuUI;
     public Camera startMenuCamera;
@@ -23,12 +23,19 @@ public class StartMenuNetworking : NetworkBehaviour
     {
         base.OnStartClient();
 
-        OnConnectedToServer();
+        OnConnectedToServer(false);
     }
 
-    void OnConnectedToServer()
+    void OnConnectedToServer(bool status)
     {
-        StarMenuUI.SetActive(false);
-        startMenuCamera.enabled = false;
+        if (StarMenuUI != null)
+            StarMenuUI.SetActive(status);
+        if (startMenuCamera != null)
+            startMenuCamera.enabled = status;
+    }
+
+    public override void OnStopClient()
+    {
+        OnConnectedToServer(true);
     }
 }
