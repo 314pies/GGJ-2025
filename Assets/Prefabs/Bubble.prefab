@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7465410249953476327}
   m_Layer: 0
   m_Name: Bubble
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,27 +119,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shinyMaterial: {fileID: 2100000, guid: f339180a143c0497a9dcde080b1c9201, type: 2}
-  popCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -0
-      outSlope: -0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.41011125
-    - serializedVersion: 3
-      time: 0.61875916
-      value: 0.5763817
-      inSlope: 1.811326
-      outSlope: 1.811326
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.06818697
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
