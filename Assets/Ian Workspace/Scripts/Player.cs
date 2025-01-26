@@ -71,6 +71,10 @@ public class Player : NetworkBehaviour
             animator.SetFloat(xVelAnimParm, xVel);
             animator.SetFloat(zVelAnimParm, zVal);
             animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                GetComponent<Rigidbody>().AddForce(Vector3.up * 300, ForceMode.Impulse);
+            }
         }
 
 
@@ -97,7 +101,7 @@ public class Player : NetworkBehaviour
 
     private Vector3[] spawnVectors =
     {
-        new Vector3(0, 200, 0)
+        new Vector3(0, 90, 0)
     };
 
     public override void OnStartAuthority()

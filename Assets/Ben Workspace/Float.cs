@@ -50,8 +50,20 @@ public class Float : NetworkBehaviour
         DESTROY_BOTTOM,
     }
     public CollisionEnum collisionType = CollisionEnum.DESTROY_BOTH;
-    public float secondsBeforePop = 0.25f;
+    public float secondsBeforePop = 0.1f;
     private float timeOfFirstCollision = -1f;
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isServer) return;
+
+        Player player = collision.gameObject.GetComponent<Player>();
+        if (player != null)
+        {
+            bouncePlayer(player);
+            StartCoroutine(handlePlayerCollision(player));
+        }
+    }
 
     private void OnCollisionStay(Collision collision)
     {
@@ -65,7 +77,7 @@ public class Float : NetworkBehaviour
             timeOfFirstCollision = Time.time;
         }
         float timePastFirstCollision = Time.time - timeOfFirstCollision;
-        bool shouldDestroy = timePastFirstCollision > secondsBeforePop;
+        bool shouldDestroy = (timePastFirstCollision > secondsBeforePop);
 
         if (shouldDestroy)
         {
@@ -73,7 +85,10 @@ public class Float : NetworkBehaviour
             {
                 case CollisionEnum.DESTROY_BOTH:
                     Destroy(gameObject);
-                    Destroy(collision.gameObject);
+                    if (isDeletableCollision(collision.gameObject))
+                    {
+                        Destroy(collision.gameObject);
+                    }
                     break;
                 case CollisionEnum.DESTROY_BOTTOM:
                     Destroy(gameObject);
@@ -82,5 +97,22 @@ public class Float : NetworkBehaviour
                     throw new System.Exception("Invalid collision type " + collisionType.ToString());
             }
         }
+    }
+
+    private bool isDeletableCollision(GameObject gameObject)
+    {
+        return gameObject.GetComponent<FloorBubble>() != null || gameObject.GetComponent<FloorBubble>() != null;
+    }
+
+    IEnumerator handlePlayerCollision(Player player)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        Destroy(gameObject);   
+    }
+
+    private void bouncePlayer(Player player)
+    {
+        player.GetComponent<Rigidbody>().AddForce(Vector3.up * 300, ForceMode.Impulse);
     }
 }

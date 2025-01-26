@@ -9,9 +9,9 @@ public class GenerateBubbles : NetworkBehaviour
     public GameObject floatingBubblePrefab;
 
     // Between 0-1 for probability, per second
-    public float generatorThreshold = 0.25f;
-    public float xMax = 20f;
-    public float zMax = 20f;
+    public float generatorThreshold = 5f;
+    public float xMax = 25f;
+    public float zMax = 25f;
 
     // Start is called before the first frame update
     void Start()
