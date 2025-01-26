@@ -11,7 +11,7 @@ public class PlasmaLauncher : NetworkBehaviour
     public bool enableByDefault = false;
 
     [SyncVar(hook = nameof(plazmaGunEnableStateHook))]
-    bool isPlazmaGunEnabled;
+    public bool isPlazmaGunEnabled;
     public void plazmaGunEnableStateHook(bool oldState, bool newState)
     {
         if (isLocalPlayer)

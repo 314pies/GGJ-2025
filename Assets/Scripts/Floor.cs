@@ -11,8 +11,7 @@ public class Floor : NetworkBehaviour
     public float verticalRange;
     public float scaleRange;
     public int width;
-
-    void Start()
+    public override void OnStartServer()
     {
         for (int i = -width; i < width; i++) {
             for (int j = -width; j < width; j++) {
