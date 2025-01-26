@@ -736,6 +736,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   power: 0
+  disableDestroy: 0
 --- !u!114 &-1096074120030004580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,6 +753,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   enableByDefault: 1
+  isPlazmaGunEnabled: 0
   ammoCount: 5
   plasmaPrefab: {fileID: 4926578939859606226, guid: b2f69bb89e1098a49b211edbead3afac,
     type: 3}

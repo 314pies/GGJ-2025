@@ -1,12 +1,15 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
 using UnityEngine;
 
 public class BubblePopper : NetworkBehaviour
 {
     [SyncVar]
     [SerializeField] public bool power = false;
+
+    public bool disableDestroy = false;
     void FixedUpdate()
     {
         if (!power)
@@ -18,7 +21,16 @@ public class BubblePopper : NetworkBehaviour
 
                 if (floorBubble != null)
                 {
-                    floorBubble.Pop();
+                    //floorBubble.PopEffect();
+                    if (isServer)
+                    {
+                        if (!floorBubble.destroying)
+                        {
+                            floorBubble.destroying = true;
+                            if (!disableDestroy)
+                                Destroy(floorBubble.gameObject, 0.4f);
+                        }
+                    }
                 }
             }
         }
