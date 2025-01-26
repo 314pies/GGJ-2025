@@ -55,15 +55,21 @@ public class Float : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isServer) return;
-
         Player player = collision.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            bouncePlayer(player);
-            StartCoroutine(handlePlayerCollision(player));
+            if (player.isLocalPlayer) {
+                bouncePlayer(player);
+                cmdDestroyBubble();
+            }            
         }
     }
+    [Command(requiresAuthority = false)]
+    public void cmdDestroyBubble()
+    {
+        StartCoroutine(handlePlayerCollision());
+    }
+
 
     private void OnCollisionStay(Collision collision)
     {
@@ -104,7 +110,7 @@ public class Float : NetworkBehaviour
         return gameObject.GetComponent<FloorBubble>() != null || gameObject.GetComponent<FloorBubble>() != null;
     }
 
-    IEnumerator handlePlayerCollision(Player player)
+    IEnumerator handlePlayerCollision()
     {
         yield return new WaitForSeconds(0.1f);
 

@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FloatingBubble Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 3311806740175417241, guid: 765dde20e5e877b46a00ea5bc5f14b9d,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 4942420076080399076, guid: 765dde20e5e877b46a00ea5bc5f14b9d,
         type: 3}
       propertyPath: m_LocalPosition.x
