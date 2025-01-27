@@ -32,6 +32,9 @@ public class PowerupBehavior : NetworkBehaviour
         if (!isServer) { return; }
         if (delay < 0 && floor.Count > 0)
         {
+            // Put delay to top so if below error out, the method here still run in the same interval
+            delay = 3f;
+
             // remove destroyed bubbles, select random bubble, and place powerup on unoccupied bubble
             floor.RemoveAll(x => x == null);
             GameObject bubble = floor[Random.Range(0, floor.Count)];
@@ -54,9 +57,7 @@ public class PowerupBehavior : NetworkBehaviour
                 NetworkServer.Spawn(pu);
                 
             }
-            
-            delay = 3f;
-            Debug.Log("reset timer");
+            // Debug.Log("reset timer");
         }
         delay -= Time.deltaTime;
     }

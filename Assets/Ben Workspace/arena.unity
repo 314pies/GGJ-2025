@@ -18739,7 +18739,7 @@ Transform:
   m_GameObject: {fileID: 1147728649}
   serializedVersion: 2
   m_LocalRotation: {x: -0.34175688, y: -0.51961493, z: -0.23807624, w: 0.7460042}
-  m_LocalPosition: {x: 5.2105513, y: -6.077254, z: -1.9060403}
+  m_LocalPosition: {x: 5.2105513, y: 100, z: -1.9060403}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36368,7 +36368,7 @@ PrefabInstance:
     - target: {fileID: 6134777675804282164, guid: 1fdc887abd411984185c9d63422750ea,
         type: 3}
       propertyPath: m_text
-      value: Ian's Wild Adventure
+      value: Spleef  Wild Adventure
       objectReference: {fileID: 0}
     - target: {fileID: 6134777675804282164, guid: 1fdc887abd411984185c9d63422750ea,
         type: 3}

@@ -28706,10 +28706,12 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  explodeRadious: 3
+  explodeRadious: 3.5
+  explodeRadiousToPlayer: 7
   flyingPlazma: {fileID: 2680301442956436224}
   explosion: {fileID: 6434903446798355273}
   explosiceYOffset: -1.5
+  PlayerPushForce: 100
 --- !u!114 &3284615700661130745
 MonoBehaviour:
   m_ObjectHideFlags: 0

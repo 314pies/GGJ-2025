@@ -14,13 +14,21 @@ public class BubblePopper : NetworkBehaviour
 
     float destroyDelay = 0.4f;
 
+    Collider[] hitColliders = new Collider[100];
+
     void FixedUpdate()
     {
         if (!power)
         {
-            Collider[] hitColliders = Physics.OverlapCapsule(transform.position, transform.position + Vector3.down, 0.5f);
+            //Collider[] hitColliders = Physics.OverlapCapsule(transform.position, transform.position + Vector3.down, 0.5f);
+
+            Physics.OverlapCapsuleNonAlloc(transform.position, transform.position + Vector3.down, 0.5f, hitColliders);
             foreach (var hitCollider in hitColliders)
             {
+                if (hitCollider == null)
+                {
+                    continue;
+                }
                 FloorBubble floorBubble = hitCollider.gameObject.GetComponent<FloorBubble>();
 
                 if (floorBubble != null)
@@ -32,8 +40,10 @@ public class BubblePopper : NetworkBehaviour
                         {
                             floorBubble.destroying = true;
                             if (!disableDestroy)
+                            {
                                 StartCoroutine(PlayPop(floorBubble.transform.position));
                                 Destroy(floorBubble.gameObject, destroyDelay);
+                            }
                         }
                     }
                 }
@@ -41,7 +51,8 @@ public class BubblePopper : NetworkBehaviour
         }
     }
 
-    IEnumerator PlayPop(Vector3 position) {
+    IEnumerator PlayPop(Vector3 position)
+    {
         yield return new WaitForSeconds(destroyDelay);
         AudioSource.PlayClipAtPoint(popSound, position);
     }

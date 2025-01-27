@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameStateManager;
 
 public class PlazmaGunSpawner : NetworkBehaviour
 {
@@ -14,6 +15,13 @@ public class PlazmaGunSpawner : NetworkBehaviour
     {
         while(true)
         {
+            if (GameObject.FindGameObjectWithTag("GameStateManager")
+                .GetComponent<GameStateManager>().gameState != GameState.InGame)
+            {
+                Debug.Log("PlazmaGunSpawner: Game not start yet, skip spawning.");
+                yield return new WaitForSeconds(60.0f);
+            }
+
             foreach (var sp in spawnPoints)
             {
                 float xVar = Random.Range(-spawnRadious, spawnRadious);
@@ -26,6 +34,7 @@ public class PlazmaGunSpawner : NetworkBehaviour
                     );
                 GameObject instance = Instantiate(plazmaGun, spos, Quaternion.identity);
                 NetworkServer.Spawn(instance);
+                Debug.Log("PlazmaGunSpawner: Spawn 1 Plazma gun at " + spos);
             }
             yield return new WaitForSeconds(60.0f);
         }
