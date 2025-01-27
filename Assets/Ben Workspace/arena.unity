@@ -36360,6 +36360,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -118.954
       objectReference: {fileID: 0}
+    - target: {fileID: 4353737514378314513, guid: 1fdc887abd411984185c9d63422750ea,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 900
+      objectReference: {fileID: 0}
+    - target: {fileID: 6134777675804282164, guid: 1fdc887abd411984185c9d63422750ea,
+        type: 3}
+      propertyPath: m_text
+      value: Ian's Wild Adventure
+      objectReference: {fileID: 0}
+    - target: {fileID: 6134777675804282164, guid: 1fdc887abd411984185c9d63422750ea,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 6514621681941571104, guid: 1fdc887abd411984185c9d63422750ea,
         type: 3}
       propertyPath: m_Pivot.x
