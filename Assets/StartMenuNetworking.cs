@@ -32,6 +32,7 @@ public class StartMenuNetworking : NetworkBehaviour
             StarMenuUI.SetActive(status);
         if (startMenuCamera != null)
             startMenuCamera.enabled = status;
+            startMenuCamera.GetComponent<AudioSource>().Stop();
     }
 
     public override void OnStopClient()
