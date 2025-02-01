@@ -39,6 +39,7 @@ public class Character : MonoBehaviour
             previousAnimator.GetBool(PlasmaLauncher.IsHoldingRifleAnimParm));
     }
 
+#if UNITY_EDITOR
     [Button]
     public void FindAndAutoAssign()
     {
@@ -54,4 +55,5 @@ public class Character : MonoBehaviour
 
         EditorUtility.SetDirty(this);
     }
+#endif
 }

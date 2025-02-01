@@ -44,6 +44,7 @@ public class GameStateManager : NetworkBehaviour
         NetworkManager.singleton.ServerChangeScene("arena");
     }
 
+
     public void OnWinnerNameupdate(string oldValue, string newValue)
     {
         gameOverUI.GetComponent<GameOverUI>().updateStatus(newValue);
@@ -55,6 +56,7 @@ public class GameStateManager : NetworkBehaviour
         gameOverUI.SetActive(false);
         gameStartButton.SetActive(false);
         ServerRestartButton.SetActive(false);
+        Time.timeScale = 1.0f;
         switch (newState)
         {
             case GameState.Wait:
@@ -76,6 +78,7 @@ public class GameStateManager : NetworkBehaviour
                     GameObject.FindGameObjectWithTag("GlobalCamera").GetComponent<FlyCamera>().enabled = false;
 
                 }
+                Time.timeScale = 0.5f;
                 break;
             default:
                 break;
@@ -114,12 +117,22 @@ public class GameStateManager : NetworkBehaviour
                 livePlayerObj = p;
             }
         }
-
+        RpcAnnounceFall(livePlayer);
         if (livePlayer <= 1)
         {
             gameState = GameState.GameOver;
             winnerName = "" + livePlayerObj.GetComponent<NetworkIdentity>().connectionToClient.connectionId;
-        }
+        } 
+    }
+
+    [SerializeField]
+    PlayerFallAnnouncement playerFallAnnouncement;
+
+    [ClientRpc]
+    public void RpcAnnounceFall(int playerLeft)
+    {
+        playerFallAnnouncement.gameObject.SetActive(true);
+        playerFallAnnouncement.AnnouncePlayerFall(playerLeft);
     }
 
 }
