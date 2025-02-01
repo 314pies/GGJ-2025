@@ -17,21 +17,75 @@ public class Player : NetworkBehaviour
     public Camera cam;
     public AudioListener audioListener;
     public Canvas canvas;
+    public PlasmaLauncher plasmaLauncher
+    {
+        get
+        {
+            return GetComponent<PlasmaLauncher>();
+        }
+    }
 
     [Header("Animations")]
-    public Animator animator;
     public float xAnimMultiplier = 0.1f, zAnimMultiplier = 0.1f;
     public float xVel = 0, zVal = 0;
     private int xVelAnimParm = Animator.StringToHash("xVel");
     private int zVelAnimParm = Animator.StringToHash("zVel");
-    private int isGroundAnimParm = Animator.StringToHash("isGround");
+    public static int isGroundAnimParm { get; private set; } = Animator.StringToHash("isGround");
     // For IK
-    public PlayerIK playerIK;
     public float iKSmoothTime = 0.07f;
     private Vector3 iKSmoothVelocity;
 
     [SyncVar(hook = nameof(onPlayerStateChanged))]
-    public int playerState;
+    public PlayerState playerState;
+
+    [Header("Character Customization")]
+    public Character[] characters;
+    public Character currentCharacter;
+    public GameObject CharacterSelectionUI;
+    [SyncVar(hook = nameof(OnChacterSelectionUpdate))]
+    public int currentCharacterIndex = 0;
+
+    [SyncVar(hook = nameof(OnEnableCharacterSelectionUpdate))]
+    public bool isEnableCharacterSelection = true;
+
+    private void OnChacterSelectionUpdate(int oldChar, int newChar)
+    {
+        Character oldCharacter = characters[oldChar];
+        Character newCharacter = characters[newChar];
+
+        newCharacter.gameObject.SetActive(true);
+        newCharacter.Initialize(oldCharacter.animator,
+            plasmaLauncher.isPlazmaGunEnabled);
+        currentCharacter = newCharacter;
+
+        GetComponent<NetworkAnimator>().animator = currentCharacter.animator;
+        oldCharacter.gameObject.SetActive(false);
+    }
+
+    [Command]
+    public void CmdSwitchCharacter()
+    {
+        if (currentCharacterIndex >= characters.Length - 1)
+        {
+            currentCharacterIndex = 0;
+        }
+        else
+        {
+            currentCharacterIndex++;
+        }
+    }
+
+    [Command]
+    public void CmdLockInCharacter()
+    {
+        isEnableCharacterSelection = false;
+    }
+    private void OnEnableCharacterSelectionUpdate(bool oldState, bool newState)
+    {
+        CharacterSelectionUI.SetActive(newState);
+    }
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +117,7 @@ public class Player : NetworkBehaviour
         rigidbody.isKinematic = false;
         cam.enabled = true;
         audioListener.enabled = true;
-        
+
     }
 
 
@@ -72,52 +126,45 @@ public class Player : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            switch ((PlayerState) playerState)
+            switch (playerState)
             {
                 case PlayerState.ALIVE:
-                    handleAliveUpdate();
+                    LocalPlayerHandleAliveUpdate();
                     break;
                 case PlayerState.SPECTATING:
+                    break;
                 case PlayerState.DEAD:
-                    //handleSpectatingUpdate();
                     break;
             }
         }
 
-        if (isServer && transform.position.y < -1 && (PlayerState) playerState == PlayerState.ALIVE)
+        if (isServer && transform.position.y < -1 && playerState == PlayerState.ALIVE)
         {
-            syncPlayerStateChage(PlayerState.SPECTATING);
+            TriggerPlayerFallEvent();
         }
 
-        playerIK.lookAt = Vector3.SmoothDamp(playerIK.lookAt, latestLookAtPos, ref iKSmoothVelocity, iKSmoothTime);
+        currentCharacter.playerIK.lookAt = Vector3.SmoothDamp(currentCharacter.playerIK.lookAt,
+            latestLookAtPos, ref iKSmoothVelocity, iKSmoothTime);
     }
 
-    //[Command(channel = Channels.Reliable)]
-    public void syncPlayerStateChage(PlayerState givenPlayerState)
+    public void TriggerPlayerFallEvent()
     {
-        playerState = (int) givenPlayerState;
+        playerState = PlayerState.SPECTATING;
         GameObject.FindGameObjectWithTag("GameStateManager")
             .GetComponent<GameStateManager>()
             .ServerOnClientFallEvent(gameObject);
     }
 
-    void onPlayerStateChanged(int oldState, int newState) {
-        if ((PlayerState) oldState != PlayerState.ALIVE)
+    void onPlayerStateChanged(PlayerState oldState, PlayerState newState)
+    {
+        if (newState == PlayerState.SPECTATING)
         {
+            enableFlyCamera();
             return;
-        }
-
-        switch ((PlayerState) newState)
-        {
-            case PlayerState.SPECTATING:
-                enableGlobalCamera();
-                break;
-            default:
-                return;
         }
     }
 
-    void enableGlobalCamera()
+    void enableFlyCamera()
     {
         if (!isLocalPlayer)
         {
@@ -130,37 +177,30 @@ public class Player : NetworkBehaviour
         globalCamera.GetComponent<FlyCamera>().enabled = true;
     }
 
-    void disableGlobalCamera()
-    {
-        cam.enabled = true;
-        GetComponent<Rigidbody>().isKinematic = false;
-        GameObject globalCamera = GameObject.FindWithTag("GlobalCamera");
-        globalCamera.GetComponent<Camera>().enabled = false;
-        globalCamera.GetComponent<FlyCamera>().enabled = false;
-    }
-
-    void handleSpectatingUpdate()
+    void LocalPlayerHandleAliveUpdate()
     {
         Vector3 localVelocity = transform.InverseTransformDirection(rigidbody.velocity);
         xVel = localVelocity.x * xAnimMultiplier;
         zVal = localVelocity.z * zAnimMultiplier;
-        animator.SetFloat(xVelAnimParm, xVel);
-        animator.SetFloat(zVelAnimParm, zVal);
-        animator.SetBool(isGroundAnimParm, false);
-    }
+        currentCharacter.animator.SetFloat(xVelAnimParm, xVel);
+        currentCharacter.animator.SetFloat(zVelAnimParm, zVal);
+        currentCharacter.animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
 
-    void handleAliveUpdate()
-    {
-        Vector3 localVelocity = transform.InverseTransformDirection(rigidbody.velocity);
-        xVel = localVelocity.x * xAnimMultiplier;
-        zVal = localVelocity.z * zAnimMultiplier;
-        animator.SetFloat(xVelAnimParm, xVel);
-        animator.SetFloat(zVelAnimParm, zVal);
-        animator.SetBool(isGroundAnimParm, GetComponent<GroundDetection>().isOnGround);
+        if (isEnableCharacterSelection && Input.GetKeyDown(KeyCode.Q))
+        {
+            CmdSwitchCharacter();
+        }
+
         if (Input.GetKeyDown(KeyCode.L))
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * 300, ForceMode.Impulse);
+            CmdLockInCharacter();
         }
+
+        // Backdoor
+        //if (Input.GetKeyDown(KeyCode.L))
+        //{
+        //    GetComponent<Rigidbody>().AddForce(Vector3.up * 300, ForceMode.Impulse);
+        //}
     }
 
     private void FixedUpdate()

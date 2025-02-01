@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class PlasmaLauncher : NetworkBehaviour
 {
@@ -12,15 +13,18 @@ public class PlasmaLauncher : NetworkBehaviour
 
     [SyncVar(hook = nameof(plazmaGunEnableStateHook))]
     public bool isPlazmaGunEnabled;
+
+    public static int IsHoldingRifleAnimParm { get; private set; } = Animator.StringToHash("IsHoldingRifle");
+    Character character { get { return GetComponent<Player>().currentCharacter; } }
+
     public void plazmaGunEnableStateHook(bool oldState, bool newState)
     {
         if (isLocalPlayer)
         {
-            animator.SetBool("IsHoldingRifle", newState);
+            character.animator.SetBool(IsHoldingRifleAnimParm, newState);
             ammoText.gameObject.SetActive(newState);
         }
-
-        plasmaRifleModel.gameObject.SetActive(newState);
+        character.UpdateStatus(newState);
     }
 
     [SyncVar(hook = nameof(onAmmoUpdate))]
@@ -38,19 +42,11 @@ public class PlasmaLauncher : NetworkBehaviour
     public Camera cam;
     public float launchDistanceFromCam = 0.5f;
     public float plazmaFlySpeed = 5.0f;
-    public Animator animator;
-    public PlasmaRifleModel plasmaRifleModel;
 
     public TMP_Text ammoText;
 
-    public void Awake()
-    {
-        plasmaRifleModel = GetComponentInChildren<PlasmaRifleModel>();
-    }
-
     public override void OnStartClient()
     {
-        
         if (isLocalPlayer)
         {
             StartCoroutine(waitAndRunDefaultEquip());
@@ -85,34 +81,32 @@ public class PlasmaLauncher : NetworkBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            cmdLaunchPlazma(cam.transform.position + cam.transform.forward * launchDistanceFromCam,
+            CmdLaunchPlazma(cam.transform.position + cam.transform.forward * launchDistanceFromCam,
                 cam.transform.rotation);
-            animator.SetTrigger("Fire");
+            character.animator.SetTrigger("Fire");
             GetComponent<Player>().playCameraShakeEffect();
             GetComponent<AudioSource>().Play();
         }
-
     }
 
     [Command]
-    public void cmdLaunchPlazma(Vector3 pos, Quaternion rot)
+    public void CmdLaunchPlazma(Vector3 pos, Quaternion rot)
     {
         GameObject plazma = Instantiate(plasmaPrefab, pos, rot);
         NetworkServer.Spawn(plazma);
         plazma.GetComponent<Rigidbody>().AddForce(plazma.transform.forward * plazmaFlySpeed, ForceMode.VelocityChange);
-        playMuzzleEffect();
-        
+        RpcPlayMuzzleEffect();
+
         ammoCount--;
-        if (ammoCount <=0)
+        if (ammoCount <= 0)
         {
             isPlazmaGunEnabled = false;
         }
-
     }
 
     [ClientRpc]
-    public void playMuzzleEffect()
+    public void RpcPlayMuzzleEffect()
     {
-        plasmaRifleModel.PlayMuzzleFlash();
+        character.plasmaRifleModel.PlayMuzzleFlash();
     }
 }

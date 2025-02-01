@@ -18620,9 +18620,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1147728653}
+  - component: {fileID: 1147728650}
   - component: {fileID: 1147728652}
   - component: {fileID: 1147728651}
-  - component: {fileID: 1147728650}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -18637,7 +18637,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147728649}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
   m_Name: 
@@ -34212,6 +34212,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 62241493447691976, guid: c28ddab6f5b4cc64d9b931ed43ab6671,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 484867645904479601, guid: c28ddab6f5b4cc64d9b931ed43ab6671,
         type: 3}
       propertyPath: m_RaycastTarget
@@ -34245,7 +34250,12 @@ PrefabInstance:
     - target: {fileID: 6473107306803924227, guid: c28ddab6f5b4cc64d9b931ed43ab6671,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542986570182141485, guid: c28ddab6f5b4cc64d9b931ed43ab6671,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -330
       objectReference: {fileID: 0}
     - target: {fileID: 6609060660677933236, guid: c28ddab6f5b4cc64d9b931ed43ab6671,
         type: 3}
