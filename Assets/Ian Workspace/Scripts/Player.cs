@@ -8,7 +8,19 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
-
+    GameStateManager _gameStateManager;
+    GameStateManager gameStateManager
+    {
+        get
+        {
+            if (_gameStateManager == null)
+            {
+                _gameStateManager = GameObject.FindGameObjectWithTag("GameStateManager")
+                        .GetComponent<GameStateManager>();
+            }
+            return _gameStateManager;
+        }
+    }
     // Enable these if it's local player
     [Header("Local Player Components")]
     public CharacterMovement characterMovement;
@@ -85,39 +97,18 @@ public class Player : NetworkBehaviour
         CharacterSelectionUI.SetActive(newState);
     }
 
-
-
-    // Start is called before the first frame update
-    void Start()
+    public override void OnStartClient()
     {
-        if (isLocalPlayer)
-        {
-            characterMovement.enabled = false;
-            baseFirstPersonController.enabled = false;
-            rigidbody.isKinematic = false;
-            cam.enabled = true;
-            audioListener.enabled = true;
-            canvas.gameObject.SetActive(true);
-        }
-        else
-        {
-            characterMovement.enabled = false;
-            baseFirstPersonController.enabled = false;
-            rigidbody.isKinematic = true;
-            cam.enabled = false;
-            audioListener.enabled = false;
-            canvas.gameObject.SetActive(false);
-        }
+        initializePlayer(isLocalPlayer);
     }
-
-    void setupLocalPlayer()
+    private void initializePlayer(bool enableLocalPlayer)
     {
-        characterMovement.enabled = true;
-        baseFirstPersonController.enabled = true;
-        rigidbody.isKinematic = false;
-        cam.enabled = true;
-        audioListener.enabled = true;
-
+        characterMovement.enabled = enableLocalPlayer;
+        baseFirstPersonController.enabled = enableLocalPlayer;
+        rigidbody.isKinematic = !enableLocalPlayer;
+        cam.enabled = enableLocalPlayer;
+        audioListener.enabled = enableLocalPlayer;
+        canvas.gameObject.SetActive(enableLocalPlayer);
     }
 
 
@@ -138,7 +129,8 @@ public class Player : NetworkBehaviour
             }
         }
 
-        if (isServer && transform.position.y < -1 && playerState == PlayerState.ALIVE)
+        if (isServer && transform.position.y < -1 && playerState == PlayerState.ALIVE 
+            && gameStateManager.gameState == GameStateManager.GameState.InGame)
         {
             TriggerPlayerFallEvent();
         }
@@ -150,9 +142,7 @@ public class Player : NetworkBehaviour
     public void TriggerPlayerFallEvent()
     {
         playerState = PlayerState.SPECTATING;
-        GameObject.FindGameObjectWithTag("GameStateManager")
-            .GetComponent<GameStateManager>()
-            .ServerOnClientFallEvent(gameObject);
+        gameStateManager.ServerOnClientFallEvent(gameObject);
     }
 
     void onPlayerStateChanged(PlayerState oldState, PlayerState newState)
@@ -219,32 +209,6 @@ public class Player : NetworkBehaviour
     public void CmdSyncLookAt(Vector3 latestPos)
     {
         latestLookAtPos = latestPos;
-    }
-
-    [SerializeField]
-    private Vector3[] spawnVectors =
-    {
-        new Vector3(0, 150, 0)
-    };
-
-    public float setSpawnPointTime = 0.6f;
-    public override void OnStartAuthority()
-    {
-        base.OnStartAuthority();
-
-        if (!isLocalPlayer) return;
-
-        StartCoroutine(waitForSpawn(setSpawnPointTime));
-    }
-
-    IEnumerator waitForSpawn(float delay)
-    {
-        // Wait for the specified time
-        yield return new WaitForSeconds(delay);
-
-        Vector3 spawnPoint = spawnVectors[Random.Range(0, spawnVectors.Length)];
-        transform.position = spawnPoint;
-        setupLocalPlayer();
     }
 
     public Animator cameraAnimator;
