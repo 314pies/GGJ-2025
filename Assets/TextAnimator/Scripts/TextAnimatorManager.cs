@@ -114,11 +114,11 @@ namespace TextAnimation {
                     if (instance.animations == null) {
                         Debug.LogError("No animations found. Please place AnimationsList inside Resources folder");
                     }
-                    try {
-                        DontDestroyOnLoad(instance.gameObject);
-                    } catch {
+                    //try {
+                    //    DontDestroyOnLoad(instance.gameObject);
+                    //} catch {
 
-                    }
+                    //}
                 }
                 return instance;
             }
