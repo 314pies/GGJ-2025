@@ -9,7 +9,7 @@ using UnityEngine;
 public class Player : NetworkBehaviour
 {
     GameStateManager _gameStateManager;
-    GameStateManager gameStateManager
+    public GameStateManager gameStateManager
     {
         get
         {

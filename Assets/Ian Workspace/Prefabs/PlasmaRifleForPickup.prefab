@@ -605,6 +605,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  fullAmmoCount: 7
   rotationSpeed: 15
 --- !u!65 &3288729992275891454
 BoxCollider:

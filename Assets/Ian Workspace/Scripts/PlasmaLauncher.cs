@@ -16,6 +16,7 @@ public class PlasmaLauncher : NetworkBehaviour
 
     public static int IsHoldingRifleAnimParm { get; private set; } = Animator.StringToHash("IsHoldingRifle");
     Character character { get { return GetComponent<Player>().currentCharacter; } }
+    GameStateManager gameStateManager { get {  return GetComponent<Player>().gameStateManager; } }
 
     public void plazmaGunEnableStateHook(bool oldState, bool newState)
     {
@@ -97,7 +98,11 @@ public class PlasmaLauncher : NetworkBehaviour
         plazma.GetComponent<Rigidbody>().AddForce(plazma.transform.forward * plazmaFlySpeed, ForceMode.VelocityChange);
         RpcPlayMuzzleEffect();
 
-        ammoCount--;
+        if (gameStateManager.gameState != GameStateManager.GameState.Wait)
+        {
+            ammoCount--;
+        }
+
         if (ammoCount <= 0)
         {
             isPlazmaGunEnabled = false;

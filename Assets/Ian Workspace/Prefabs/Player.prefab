@@ -112,7 +112,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3a0e7f0710c5d4421ae01b8b5e56b87c, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
@@ -806,9 +806,6 @@ MonoBehaviour:
   currentCharacterIndex: 0
   isEnableCharacterSelection: 1
   latestLookAtPos: {x: 0, y: 0, z: 0}
-  spawnVectors:
-  - {x: 0, y: 80, z: 0}
-  setSpawnPointTime: 0.6
   cameraAnimator: {fileID: 6512467005956510887}
 --- !u!114 &-1586707627386085238
 MonoBehaviour:
@@ -846,6 +843,7 @@ MonoBehaviour:
   power: 0
   popSound: {fileID: 8300000, guid: 3d8e96a5be3a54a84b16bad0bbd0d62a, type: 3}
   disableDestroy: 0
+  radious: 0.85
 --- !u!114 &-1096074120030004580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,7 +866,7 @@ MonoBehaviour:
     type: 3}
   cam: {fileID: 3629386939047191285}
   launchDistanceFromCam: 5.5
-  plazmaFlySpeed: 10
+  plazmaFlySpeed: 25
   ammoText: {fileID: 1102500341036113233}
 --- !u!114 &-8219785543233034484
 MonoBehaviour:

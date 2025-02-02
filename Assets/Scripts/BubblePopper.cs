@@ -16,13 +16,15 @@ public class BubblePopper : NetworkBehaviour
 
     Collider[] hitColliders = new Collider[100];
 
+    public float radious = 0.5f;
+
     void FixedUpdate()
     {
         if (!power)
         {
             //Collider[] hitColliders = Physics.OverlapCapsule(transform.position, transform.position + Vector3.down, 0.5f);
 
-            Physics.OverlapCapsuleNonAlloc(transform.position, transform.position + Vector3.down, 0.5f, hitColliders);
+            Physics.OverlapCapsuleNonAlloc(transform.position, transform.position + Vector3.down, radious, hitColliders);
             foreach (var hitCollider in hitColliders)
             {
                 if (hitCollider == null)
