@@ -1,0 +1,1 @@
+Seems like GitHub page only recognizes root or /docs folder.
