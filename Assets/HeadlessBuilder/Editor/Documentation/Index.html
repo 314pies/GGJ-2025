@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>Headless Builder</title>
+		
+		<link rel="shortcut icon" href="../Assets/Texture/logo.png" type="image/png" />
+		
+		<style>
+			body {
+				margin:25px;
+			}
+		</style>
+		
+		<script>
+			function addSection(name, height) {
+				height += 40;
+			
+				document.write('<h3>' + capitalizeFirstLetter(name).replace(/([A-Z])/g, ' $1').trim() + '</h3>');
+				document.write('<iframe frameborder="0" scrolling="no" width="600" height="' + height + '" src="' + name + '.html"></iframe>');
+				document.write('<br/><br/>');
+			}
+			function capitalizeFirstLetter(string) {
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			}
+		</script>
+	</head>
+	<body>
+		<h1>Headless Builder</h1>
+	
+		<script>
+			addSection("gettingStarted", 92);
+			addSection("profiles", 147);
+			addSection("application", 349);
+			addSection("assets", 540);
+			addSection("scripting", 368);
+			addSection("cloud", 331);
+			addSection("batch", 328);
+			addSection("permissions", 312);
+			addSection("troubleshooting", 184);
+			addSection("about", 184);
+		</script>
+	</body>
+</html>
