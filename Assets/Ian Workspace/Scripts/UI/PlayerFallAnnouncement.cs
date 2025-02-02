@@ -52,12 +52,12 @@ public class PlayerFallAnnouncement : MonoBehaviour
     {
         announcementText.text = announcements[Random.Range(0, announcements.Length)];
         playerFallTypeWrite.StartTypewriter();
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(3.5f);
 
         playerLeftTypeWriter.StartTypewriter();
         playerLeftText.text = leftPlayerCount + " Players Left...";
 
-        yield return new WaitForSeconds(6.0f);
+        yield return new WaitForSeconds(5.0f);
         playerFallTypeWrite.Hide();
         playerLeftTypeWriter.Hide();
     }

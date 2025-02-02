@@ -74,9 +74,17 @@ public class Player : NetworkBehaviour
         oldCharacter.gameObject.SetActive(false);
     }
 
+    [SyncVar]
+    public bool isReadyToStart = false;
+
     [Command]
     public void CmdSwitchCharacter()
     {
+        if (!isEnableCharacterSelection)
+        {
+            return;
+        }
+
         if (currentCharacterIndex >= characters.Length - 1)
         {
             currentCharacterIndex = 0;
@@ -87,20 +95,38 @@ public class Player : NetworkBehaviour
         }
     }
 
-    [Command]
-    public void CmdLockInCharacter()
+    public IEnumerator ServerPickRandomCharacter()
     {
-        isEnableCharacterSelection = false;
+        yield return new WaitForSecondsRealtime(0.5f);
+        if (isEnableCharacterSelection)
+        {
+            currentCharacterIndex = Random.Range(0, characters.Length);
+        }
     }
+
     private void OnEnableCharacterSelectionUpdate(bool oldState, bool newState)
     {
         CharacterSelectionUI.SetActive(newState);
+    }
+
+    [Command]
+    public void CmdVoteReady()
+    {
+        isReadyToStart = !isReadyToStart;
+        isEnableCharacterSelection = !isReadyToStart;
+        gameStateManager.ServerUpdatePlayerReadyState();
     }
 
     public override void OnStartClient()
     {
         initializePlayer(isLocalPlayer);
     }
+
+    public override void OnStartServer()
+    {
+        StartCoroutine(ServerPickRandomCharacter());
+    }
+
     private void initializePlayer(bool enableLocalPlayer)
     {
         characterMovement.enabled = enableLocalPlayer;
@@ -183,7 +209,7 @@ public class Player : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            CmdLockInCharacter();
+            CmdVoteReady();
         }
 
         // Backdoor

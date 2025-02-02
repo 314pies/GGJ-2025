@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using TMPro;
 using UnityEngine;
 
 public class GameStateManager : NetworkBehaviour
@@ -19,24 +20,30 @@ public class GameStateManager : NetworkBehaviour
 
     [Header("UI GameObjects")]
     public GameObject waitingUI;
+    public TMP_Text playerReadyStatus;
     public GameObject gameOverUI;
-
-    [Header("ServerWait")]
-    public GameObject gameStartButton;
+    
 
     [Header("GameOverSyncVar")]
     [SyncVar(hook = nameof(OnWinnerNameupdate))]
     public string winnerName;
+    [SyncVar(hook = nameof(OnGameRestartCountdownUpdate))]
+    public string gameRestartTextString;
+    public TMP_Text gameRestartText;
 
     [Header("Other")]
     public GameObject waitFloor;
 
-    public GameObject ServerRestartButton;
+    [SyncVar(hook = nameof(OnPlayerReadyStatusUpdate))]
+    public string playerWaitingStatus;
+
+
 
     public void ServerStartGame()
     {
         Debug.Log("Server Start Game");
         gameState = GameState.InGame;
+        RpcGameStartAnnouncement();
     }
 
     public void ServerReloadScene()
@@ -49,22 +56,23 @@ public class GameStateManager : NetworkBehaviour
     {
         gameOverUI.GetComponent<GameOverUI>().updateStatus(newValue);
     }
+
+    public void OnGameRestartCountdownUpdate(string oldValue, string newValue)
+    {
+        gameRestartText.text = newValue;
+    }
+
     public void OnGameStateUpdate(GameState old, GameState newState)
     {
         Debug.Log("OnGameStateUpdate: " + newState);
         waitingUI.SetActive(false);
         gameOverUI.SetActive(false);
-        gameStartButton.SetActive(false);
-        ServerRestartButton.SetActive(false);
+
         Time.timeScale = 1.0f;
         switch (newState)
         {
             case GameState.Wait:
                 waitingUI.SetActive(true);
-                if (isServer)
-                {
-                    gameStartButton.SetActive(true);
-                }
                 waitFloor.SetActive(true);
                 break;
             case GameState.InGame:
@@ -72,12 +80,6 @@ public class GameStateManager : NetworkBehaviour
                 break;
             case GameState.GameOver:
                 gameOverUI.SetActive(true);
-                if (isServer)
-                {
-                    ServerRestartButton.SetActive(true);
-                    GameObject.FindGameObjectWithTag("GlobalCamera").GetComponent<FlyCamera>().enabled = false;
-
-                }
                 Time.timeScale = 0.5f;
                 break;
             default:
@@ -85,15 +87,15 @@ public class GameStateManager : NetworkBehaviour
         }
     }
 
+    public void OnPlayerReadyStatusUpdate(string oldValue, string newValue)
+    {
+        playerReadyStatus.text = newValue;
+    }
+
     public override void OnStartServer()
     {
         gameState = GameState.Wait;
-    }
-
-    public void StartGame()
-    {
-        gameState = GameState.InGame;
-        RpcGameStartAnnouncement();
+        StartCoroutine(ServerUpdatePlayerReadyStatePolling());
     }
 
     [ClientRpc]
@@ -122,7 +124,19 @@ public class GameStateManager : NetworkBehaviour
         {
             gameState = GameState.GameOver;
             winnerName = "" + livePlayerObj.GetComponent<NetworkIdentity>().connectionToClient.connectionId;
-        } 
+            StartCoroutine(ServerRestartCountDown());
+        }
+    }
+
+    IEnumerator ServerRestartCountDown()
+    {
+        int countDownSeconds = 20;
+        while (countDownSeconds > 0) {
+            gameRestartTextString = "Game Restart in..." + countDownSeconds;
+            yield return new WaitForSecondsRealtime(1);
+            countDownSeconds--;
+        }
+        ServerReloadScene();
     }
 
     [SerializeField]
@@ -133,6 +147,36 @@ public class GameStateManager : NetworkBehaviour
     {
         playerFallAnnouncement.gameObject.SetActive(true);
         playerFallAnnouncement.AnnouncePlayerFall(playerLeft);
+    }
+
+    public IEnumerator ServerUpdatePlayerReadyStatePolling()
+    {
+        while (gameState == GameState.Wait) {            
+            ServerUpdatePlayerReadyState();
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
+
+    public void ServerUpdatePlayerReadyState()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        int readyPlayerCount = 0;
+        foreach (GameObject p in players)
+        {
+            if (p.GetComponent<Player>().isReadyToStart)
+            {
+                readyPlayerCount++;
+            }
+        }
+
+        playerWaitingStatus = "Waiting for all players to get ready\n ("
+            + readyPlayerCount + "/" + players.Length + ")";
+
+        if (readyPlayerCount == players.Length && players.Length >= 1)
+        {
+            // Everyone ready, start game
+            ServerStartGame();
+        }
     }
 
 }

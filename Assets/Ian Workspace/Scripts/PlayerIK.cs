@@ -14,6 +14,11 @@ public class PlayerIK : MonoBehaviour
     }
     private void OnAnimatorIK()
     {
+        if (animator == null)
+        {
+            Debug.LogWarning("PlayerIK: animator not found on " + gameObject.name);
+            return;
+        }
         animator.SetLookAtWeight(weight, body, head);
         animator.SetLookAtPosition(lookAt);
     }
