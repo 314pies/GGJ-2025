@@ -19723,10 +19723,10 @@ MonoBehaviour:
   port: 27778
   batchSend: 1
   waitBeforeSend: 1
-  clientUseWss: 1
+  clientUseWss: 0
   clientWebsocketSettings:
-    ClientPortOption: 2
-    CustomClientPort: 7778
+    ClientPortOption: 0
+    CustomClientPort: 7777
   minimumLogLevel: 3
 --- !u!114 &1147728655
 MonoBehaviour:

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StartMenu : MonoBehaviour
 {
+    public const string DISCORD_LINK = "https://discord.gg/W8bvVuuTvQ";
 
     public GameObject CreateRoomButton;
     // Start is called before the first frame update
@@ -18,6 +19,6 @@ public class StartMenu : MonoBehaviour
 
     public void OnDiscordButtonClicked()
     {
-        Application.OpenURL("https://discord.gg/DjRMwa7Myw");
+        Application.OpenURL(DISCORD_LINK);
     }
 }
