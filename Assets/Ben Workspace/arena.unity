@@ -19570,6 +19570,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1147728653}
+  - component: {fileID: 1147728656}
   - component: {fileID: 1147728650}
   - component: {fileID: 1147728652}
   - component: {fileID: 1147728651}
@@ -19639,7 +19640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
   runInBackground: 1
-  headlessStartMode: 1
+  headlessStartMode: 0
   editorAutoStart: 0
   sendRate: 60
   offlineScene: 
@@ -19742,6 +19743,19 @@ MonoBehaviour:
   transports:
   - {fileID: 1147728651}
   - {fileID: 1147728654}
+--- !u!114 &1147728656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147728649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfa2b6eff4cfc1242a3dd5cf62a154c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceStartServer: 0
 --- !u!1001 &1149002529
 PrefabInstance:
   m_ObjectHideFlags: 0
