@@ -805,6 +805,7 @@ MonoBehaviour:
   CharacterSelectionUI: {fileID: 6410869631953540371}
   currentCharacterIndex: 0
   isEnableCharacterSelection: 1
+  isReadyToStart: 0
   latestLookAtPos: {x: 0, y: 0, z: 0}
   cameraAnimator: {fileID: 6512467005956510887}
 --- !u!114 &-1586707627386085238
@@ -868,6 +869,7 @@ MonoBehaviour:
   launchDistanceFromCam: 5.5
   plazmaFlySpeed: 25
   ammoText: {fileID: 1102500341036113233}
+  fireSoundEffect: {fileID: 8300000, guid: b3bbf561ef7df4665b7add5a2abbc33a, type: 3}
 --- !u!114 &-8219785543233034484
 MonoBehaviour:
   m_ObjectHideFlags: 0

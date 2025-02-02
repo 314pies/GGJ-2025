@@ -46,6 +46,7 @@ public class PlasmaLauncher : NetworkBehaviour
 
     public TMP_Text ammoText;
 
+    public AudioClip fireSoundEffect;
     public override void OnStartClient()
     {
         if (isLocalPlayer)
@@ -86,7 +87,7 @@ public class PlasmaLauncher : NetworkBehaviour
                 cam.transform.rotation);
             character.animator.SetTrigger("Fire");
             GetComponent<Player>().playCameraShakeEffect();
-            GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().PlayOneShot(fireSoundEffect, 0.5f);
         }
     }
 
