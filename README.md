@@ -4,7 +4,7 @@
 ## 🌟 About the Game  
 A fast-paced multiplayer battle arena where players race, dodge, and blast bubbles to outlast their opponents! Inspired by the famous Minecraft Spleef mod, players must strategically break bubble platforms beneath their rivals while avoiding falling into the abyss themselves.   
 
-This game captures the essence of the GGJ2024 theme: **"Bubble"**.
+This game captures the essence of the GGJ 2025 theme: **"Bubble"**.
 - **GGJ Page:** https://globalgamejam.org/games/2025/spleef-wild-adventure-4
 - **Genre:** Platformer, Multiplayer, PVP
 - **Engine:** Unity (with [Mirro Framework](https://github.com/MirrorNetworking/Mirror) )
