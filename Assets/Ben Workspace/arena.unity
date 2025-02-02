@@ -6272,7 +6272,7 @@ PrefabInstance:
     - target: {fileID: 6197894989502382718, guid: 2cf4412c008fcbb44a3faf300f94cfbf,
         type: 3}
       propertyPath: generatorThreshold
-      value: 5
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 6197894989502382718, guid: 2cf4412c008fcbb44a3faf300f94cfbf,
         type: 3}

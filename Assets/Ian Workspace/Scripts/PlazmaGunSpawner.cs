@@ -15,11 +15,12 @@ public class PlazmaGunSpawner : NetworkBehaviour
     {
         while(true)
         {
-            if (GameObject.FindGameObjectWithTag("GameStateManager")
+            if (GameObject.FindGameObjectWithTag(GameStateManager.GameStateManagerTag)
                 .GetComponent<GameStateManager>().gameState != GameState.InGame)
             {
                 Debug.Log("PlazmaGunSpawner: Game not start yet, skip spawning.");
                 yield return new WaitForSeconds(60.0f);
+                continue;
             }
 
             foreach (var sp in spawnPoints)

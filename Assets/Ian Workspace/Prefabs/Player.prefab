@@ -844,7 +844,7 @@ MonoBehaviour:
   power: 0
   popSound: {fileID: 8300000, guid: 3d8e96a5be3a54a84b16bad0bbd0d62a, type: 3}
   disableDestroy: 0
-  radious: 0.85
+  radious: 0.8
 --- !u!114 &-1096074120030004580
 MonoBehaviour:
   m_ObjectHideFlags: 0

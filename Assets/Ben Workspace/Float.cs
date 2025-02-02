@@ -15,6 +15,8 @@ public class Float : NetworkBehaviour
     [SyncVar]
     private float startTime;
 
+    GameStateManager gameStateManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,12 +28,20 @@ public class Float : NetworkBehaviour
         actualFloatSpeed = baseFlatSpeed * Random.Range(0.75f, 1.25f);
         actualTimeBeforePop = timeBeforePopSeconds * Random.Range(0.75f, 1.25f);
         startTime = Time.time;
+
+        gameStateManager = GameObject.FindGameObjectWithTag(GameStateManager.GameStateManagerTag)
+                        .GetComponent<GameStateManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (!isServer)
+        {
+            return;
+        }
+
+        if (gameStateManager.gameState != GameStateManager.GameState.InGame)
         {
             return;
         }

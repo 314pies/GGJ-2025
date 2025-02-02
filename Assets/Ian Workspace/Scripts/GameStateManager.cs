@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GameStateManager : NetworkBehaviour
 {
+    public const string GameStateManagerTag = "GameStateManager";
 
     public enum GameState
     {

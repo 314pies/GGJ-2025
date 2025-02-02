@@ -15,7 +15,7 @@ public class Player : NetworkBehaviour
         {
             if (_gameStateManager == null)
             {
-                _gameStateManager = GameObject.FindGameObjectWithTag("GameStateManager")
+                _gameStateManager = GameObject.FindGameObjectWithTag(GameStateManager.GameStateManagerTag)
                         .GetComponent<GameStateManager>();
             }
             return _gameStateManager;
