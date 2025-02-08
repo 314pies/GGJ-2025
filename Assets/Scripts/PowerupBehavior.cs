@@ -11,7 +11,7 @@ public class PowerupBehavior : NetworkBehaviour
     [SerializeField] private float delay = 3.0f;
     // Start is called before the first frame update
 
-    public override void OnStartClient()
+    public override void OnStartServer()
     {
         StartCoroutine(WaitAndInitializeFloorList());
     }
