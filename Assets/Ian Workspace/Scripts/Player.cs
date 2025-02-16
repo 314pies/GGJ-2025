@@ -21,6 +21,21 @@ public class Player : NetworkBehaviour
             return _gameStateManager;
         }
     }
+
+    [SyncVar(hook = nameof(OnPlayerNameUpdate))]
+    public string NameTag;
+    private void OnPlayerNameUpdate(string oldValue, string newValue)
+    {
+        playerNameTag.SetNameTag(newValue);
+    }
+
+    [Command]
+    public void CmdSetPlayerName(string playerName)
+    {
+        Debug.Log("CmdSetPlayerName: " + playerName);
+        NameTag = playerName;
+    }
+
     // Enable these if it's local player
     [Header("Local Player Components")]
     public CharacterMovement characterMovement;
@@ -29,6 +44,7 @@ public class Player : NetworkBehaviour
     public Camera cam;
     public AudioListener audioListener;
     public Canvas canvas;
+    public PlayerNameTag playerNameTag;
     public PlasmaLauncher plasmaLauncher
     {
         get
@@ -120,6 +136,9 @@ public class Player : NetworkBehaviour
     public override void OnStartClient()
     {
         initializePlayer(isLocalPlayer);
+        if (isLocalPlayer) {
+            CmdSetPlayerName(StartMenu.InputPlayerName);
+        }
     }
 
     public override void OnStartServer()
@@ -135,6 +154,7 @@ public class Player : NetworkBehaviour
         cam.enabled = enableLocalPlayer;
         audioListener.enabled = enableLocalPlayer;
         canvas.gameObject.SetActive(enableLocalPlayer);
+        playerNameTag.gameObject.SetActive(!enableLocalPlayer);
     }
 
 

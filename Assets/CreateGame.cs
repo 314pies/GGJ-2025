@@ -10,6 +10,7 @@ public class CreateGame : MonoBehaviour
     public NetworkManager networkManager;
     public TMP_Text statusText;
     public Button createGameButton;
+    public StartMenu startMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class CreateGame : MonoBehaviour
     void onCreateGameClicked()
     {
         networkManager.StartHost();
+        startMenu.UpdateLocalName();
         SetStatusText("Creating host...");
     }
 

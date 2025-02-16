@@ -8,6 +8,6 @@ public class GameOverUI : MonoBehaviour
     public TMP_Text winnerNameText;
     public void updateStatus(string winnerName)
     {
-        winnerNameText.text =  "Player " + winnerName + " WIN!!!";
+        winnerNameText.text =  winnerName + " WIN!!!";
     }
 }

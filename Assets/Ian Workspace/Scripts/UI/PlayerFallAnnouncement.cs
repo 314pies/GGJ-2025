@@ -8,18 +8,18 @@ using UnityEngine;
 
 public class PlayerFallAnnouncement : MonoBehaviour
 {
-    private string[] announcements = new string[] {
-        "Waves whisper as the sea swallows a fading cry.",
-        "Fingers reach, but water pulls them into silence.",
-        "A final breath vanishes beneath the rising tide.",
-        "The ocean sighs, cradling another forgotten soul.",
-        "Sunlight fades as the deep claims its own.",
-        "Bubbles rise, but no voice follows.",
-        "The sea takes without promise of return.",
-        "A splash, a struggle, then only ripples remain.",
-        "Darkness unfolds where the water closes in.",
-        "The tide erases, but the depths remember."
-    };
+    //private string[] announcements = new string[] {
+    //    "Waves whisper as the sea swallows a fading cry.",
+    //    "Fingers reach, but water pulls them into silence.",
+    //    "A final breath vanishes beneath the rising tide.",
+    //    "The ocean sighs, cradling another forgotten soul.",
+    //    "Sunlight fades as the deep claims its own.",
+    //    "Bubbles rise, but no voice follows.",
+    //    "The sea takes without promise of return.",
+    //    "A splash, a struggle, then only ripples remain.",
+    //    "Darkness unfolds where the water closes in.",
+    //    "The tide erases, but the depths remember."
+    //};
 
     public Typewriter playerFallTypeWrite;
     public TMP_Text announcementText;
@@ -30,7 +30,7 @@ public class PlayerFallAnnouncement : MonoBehaviour
     [Button]
     public void TestAnnouncePlayerFall()
     {
-        AnnouncePlayerFall(2);
+        AnnouncePlayerFall(2, "MrTest");
     }
 
     private void Start()
@@ -39,20 +39,21 @@ public class PlayerFallAnnouncement : MonoBehaviour
         playerLeftTypeWriter.Hide();
     }
 
-    public void AnnouncePlayerFall(int leftPlayerCount)
+    public void AnnouncePlayerFall(int leftPlayerCount, string playerFallName)
     {
         playerFallTypeWrite.Hide();
         playerLeftTypeWriter.Hide();
 
-        StartCoroutine(playAnnouncement(leftPlayerCount));
+        StartCoroutine(playAnnouncement(leftPlayerCount, playerFallName));
     }
 
 
-    IEnumerator playAnnouncement(int leftPlayerCount)
+    IEnumerator playAnnouncement(int leftPlayerCount, string playerFallName)
     {
-        announcementText.text = announcements[Random.Range(0, announcements.Length)];
+        //announcementText.text = announcements[Random.Range(0, announcements.Length)];
+        announcementText.text = "<color=\"white\"><u> " + playerFallName + "</u></color>" + " Eliminated";
         playerFallTypeWrite.StartTypewriter();
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(2.5f);
 
         playerLeftTypeWriter.StartTypewriter();
         playerLeftText.text = leftPlayerCount + " Players Left...";

@@ -10,6 +10,9 @@ public class JoinGame : MonoBehaviour
 
     public NetworkManager networkManager;
     public TMP_InputField ipInputField;
+
+    public StartMenu startMenu;
+
     public Button joinGameButton;
     public TMP_Text statusText;
 
@@ -33,6 +36,7 @@ public class JoinGame : MonoBehaviour
 
         if (!string.IsNullOrEmpty(ipAddress))
         {
+            startMenu.UpdateLocalName();
             ConnectToServer(ipAddress);
         }
         else

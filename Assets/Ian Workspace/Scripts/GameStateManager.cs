@@ -120,11 +120,11 @@ public class GameStateManager : NetworkBehaviour
                 livePlayerObj = p;
             }
         }
-        RpcAnnounceFall(livePlayer);
+        RpcAnnounceFall(livePlayer, player.GetComponent<Player>().NameTag);
         if (livePlayer <= 1)
         {
             gameState = GameState.GameOver;
-            winnerName = "" + livePlayerObj.GetComponent<NetworkIdentity>().connectionToClient.connectionId;
+            winnerName = "" + livePlayerObj.GetComponent<Player>().NameTag;
             StartCoroutine(ServerRestartCountDown());
         }
     }
@@ -144,10 +144,10 @@ public class GameStateManager : NetworkBehaviour
     PlayerFallAnnouncement playerFallAnnouncement;
 
     [ClientRpc]
-    public void RpcAnnounceFall(int playerLeft)
+    public void RpcAnnounceFall(int playerLeft, string playerFallName)
     {
         playerFallAnnouncement.gameObject.SetActive(true);
-        playerFallAnnouncement.AnnouncePlayerFall(playerLeft);
+        playerFallAnnouncement.AnnouncePlayerFall(playerLeft, playerFallName);
     }
 
     public IEnumerator ServerUpdatePlayerReadyStatePolling()
