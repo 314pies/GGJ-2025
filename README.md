@@ -7,7 +7,7 @@ A fast-paced multiplayer battle arena where players race, dodge, and blast bubbl
 This game captures the essence of the GGJ 2025 theme: **"Bubble"**.
 - **GGJ Page:** https://globalgamejam.org/games/2025/spleef-wild-adventure-4
 - **Genre:** Platformer, Multiplayer, PVP
-- **Engine:** Unity (with [Mirro Framework](https://github.com/MirrorNetworking/Mirror) )
+- **Engine:** Unity (with [Mirror Framework](https://github.com/MirrorNetworking/Mirror) )
 - **Platform:** Windows, Mac, Web, Linux (dedicated Server)
 - **Team (in alphabetical order):**   
   [@bglossner](https://github.com/bglossner) • [@caseyavila](https://github.com/caseyavila) • [@JefferNg](https://github.com/JefferNg) • [@314pies](https://github.com/314pies) 
